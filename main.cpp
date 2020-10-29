@@ -26,6 +26,8 @@ int main()
 	{
 		std::cout << "Load failed" << std::endl;
 	}
+
+
 	//background
 	sf::Sprite background;
 	background.setTexture(backgroundTexture);
@@ -36,7 +38,7 @@ int main()
 	//int spriteSizeX = playerTexture.getSize().x / 3;
 	//int spriteSizeY = playerTexture.getSize().y / 4;
 	player.setTextureRect(sf::IntRect(20, 515, 24, 64));
-	player.setPosition(20, 20);
+	player.setPosition(376, 350);
 	player.setScale(2.f, 2.f);
 	int animationFrame = 0;
 
