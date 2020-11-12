@@ -18,7 +18,7 @@ int main()
 	
 	sf::RectangleShape background(sf::Vector2f(3569*4,200*4));
 	sf::Texture backgroundtexture;
-	backgroundtexture.loadFromFile("resource/MyMap.png");
+	backgroundtexture.loadFromFile("resource/MyMap2.png");
 	background.setTexture(&backgroundtexture);
 
 	Player player(&playerTexture, sf::Vector2u(3, 9), 1.0f, 300.0f,260.0f);
@@ -26,7 +26,7 @@ int main()
 	std::vector<Platform> platforms;
 
 	//Floor
-	platforms.push_back(Platform(nullptr, sf::Vector2f(4  *48.0f ,  4*16.0f),sf::Vector2f(4 *	24.0f, 4 *88.0f)));
+	platforms.push_back(Platform(nullptr, sf::Vector2f(4  *48.0f ,  4*16.0f),sf::Vector2f(4 *	33.0f, 4 *98.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4  * 9.0f,  4 * 16.0f), sf::Vector2f(4 * 51.5f,  4 * 98.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4  * 17.0f,  4 * 16.0f), sf::Vector2f(4 * 63.5f , 4 * 114.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4  * 17.0f,  4 * 16.0f), sf::Vector2f(4 * 79.5f , 4 * 130.0f)));
@@ -117,13 +117,13 @@ int main()
 		
 		window.clear();
 		
-		
+		for (Platform& platform : platforms)
+			platform.Draw(window);
 		window.draw(background);
 		window.setView(view);
 		player.Draw(window);
 
-		for (Platform& platform : platforms)
-			platform.Draw(window);
+	
 
 
 
