@@ -21,7 +21,7 @@ int main()
 	backgroundtexture.loadFromFile("resource/MyMap2.png");
 	background.setTexture(&backgroundtexture);
 
-	Player player(&playerTexture, sf::Vector2u(3, 9), 1.0f, 300.0f,260.0f);
+	Player player(&playerTexture, sf::Vector2u(3, 9), 0.3f, 300.0f,260.0f);
 
 	std::vector<Platform> platforms;
 
