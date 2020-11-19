@@ -15,8 +15,8 @@ public:
     void SetPosition(float x, float y);
 
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
-    sf::Vector2f GetPosition() { return body.getPosition(); }
-    Collider GetCollider() { return Collider(body); }
+    sf::Vector2f GetPosition()      { return body.getPosition(); }
+    Collider GetCollider()          { return Collider(body); }
     sf::RectangleShape body;
   
 
@@ -31,4 +31,5 @@ private:
     sf::Vector2f velocity;
     bool canJump;
     float jumpHeight;
+    bool speedUp;
 };

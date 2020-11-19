@@ -6,10 +6,14 @@
 #include <stdlib.h>
 #include <math.h>
 #include<vector>
+#include"Bullet.h"
 
 
 int main()
 {
+	//variable
+	int score, playerHP, life=3;
+
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame",sf::Style::Close);	
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(800.f, 600.0f));
 
@@ -24,6 +28,25 @@ int main()
 	Player player(&playerTexture, sf::Vector2u(3, 9), 0.3f, 300.0f,260.0f);
 
 	std::vector<Platform> platforms;
+	std::vector<Platform> fire;
+	std::vector<Bullet>  bullet;
+	
+	sf::Sprite monster[10];
+	sf::Texture monsterTexture;
+	sf::Texture bulletTexture;
+	bulletTexture.loadFromFile("resource/fireball.png");
+
+	monsterTexture.loadFromFile("resource/fireball.png");
+	for (int i = 0; i < 9; i++) {
+		monster[i].setTexture(monsterTexture);
+		monster[i].setTextureRect(sf::IntRect(0, 0, 100, 100));
+		monster[i].setPosition(200*i, 500);
+	}
+	
+
+	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 174.0f, 4 * 14.0f), sf::Vector2f(4 * 353.0f, 4 * 193.0f)));
+	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 14.0f), sf::Vector2f(4 * 1617.0f, 4 * 196.0f)));
+	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 14.0f), sf::Vector2f(4 * 1681.0f, 4 * 196.0f)));
 
 	//Floor
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4  *48.0f ,  4*16.0f),sf::Vector2f(4 *	33.0f, 4 *98.0f)));
@@ -47,7 +70,6 @@ int main()
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 48.0f), sf::Vector2f(4 * 1408.0f, 4 * 98.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 31.0f), sf::Vector2f(4 * 1424.0f, 4 * 89.5f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 32.0f, 4 * 15.0f), sf::Vector2f(4 * 1448.0f, 4 * 81.5f)));
-
 
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 48.0f), sf::Vector2f(4 * 1504.0f, 4 * 162.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 65.0f, 4 * 8.0f), sf::Vector2f(4 * 1559.5f, 4 * 190.0f)));
@@ -87,8 +109,9 @@ int main()
 	
 	
 	float deltaTime = 0.0f;
+	float bulletTime = 0.0f;
 	sf::Clock clock;
-
+	sf::Clock bullTime;
 	window.setFramerateLimit(60);		
 
 	while (window.isOpen()) 
@@ -103,29 +126,54 @@ int main()
 		
 		//render
 		player.Update(deltaTime);
+		
 
 		Collider playerCollision = player.GetCollider();
 		sf::Vector2f direction;
+
+		for (Platform& fire : fire)
+			if (fire.GetCollider().CheckCollision(playerCollision, direction, 1.0f))
+			{
+				player.SetPosition(300.f, 250.f);
+				life--;
+				playerHP = 100;
+			}
+
 		for(Platform& platform : platforms)
 			if (platform.GetCollider().CheckCollision(playerCollision,direction,1.0f))
 			{
 				player.onCollision(direction);
 			}
 		
+		bulletTime = bullTime.getElapsedTime().asMilliseconds();
+
+		if (bulletTime > 200) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+				bullet.push_back(Bullet(&bulletTexture, sf::Vector2u(), 0, sf::Vector2f(player.GetPosition().x + 10, player.GetPosition().y)));
+				bullTime.restart();
+			}
+		}
+		for (Bullet& bullet : bullet) {
+			bullet.Update(deltaTime);
+		}
+
+
 		view.setCenter(player.GetPosition());
-		std::cout << player.GetPosition().x << " " << player.GetPosition().y << std::endl;
+		std::cout << player.GetPosition().x/4 << " " << player.GetPosition().y/4 << std::endl;
 		
-		window.clear();
-		
-		for (Platform& platform : platforms)
-			platform.Draw(window);
+		window.clear();		
 		window.draw(background);
 		window.setView(view);
+		for (int i = 0; i < 9; i++) {
+			//window.draw(monster[i]);
+		}
 		player.Draw(window);
-
-	
-
-
+		//for (Platform& platform : platforms)
+		//	platform.Draw(window);
+		for (Bullet& bullet : bullet)
+		{
+			bullet.Draw(window);
+		}
 
 		window.display();
 	}

@@ -40,8 +40,19 @@ void Player::Update(float deltaTime)
         velocity.y = -sqrt(2.0f * 981.0f * jumpHeight);
     }
 
+    
     velocity.y += 981.0f * deltaTime;
 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && speedUp ||sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && speedUp)
+    {
+       speed = speed  +  200;
+       speedUp = false;
+    }
+    else if(!speedUp)
+    {
+        speed = speed - 200;
+        speedUp = true;
+    }
 
     if (velocity.x == 0.0f)
     {
