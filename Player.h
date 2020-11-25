@@ -13,6 +13,7 @@ public:
     void Draw(sf::RenderWindow& window);
     void onCollision(sf::Vector2f direction);
     void SetPosition(float x, float y);
+    bool getDirection();
 
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
     sf::Vector2f GetPosition()      { return body.getPosition(); }

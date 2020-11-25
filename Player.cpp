@@ -103,3 +103,8 @@ void Player::SetPosition(float x, float y)
 {
     body.setPosition(x, y);
 }
+
+bool Player::getDirection()
+{
+    return faceRight;
+}

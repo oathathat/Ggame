@@ -7,12 +7,15 @@
 #include <math.h>
 #include<vector>
 #include"Bullet.h"
+#include"Enemy.h"
+#include <sstream>
 
 
 int main()
 {
 	//variable
 	int score, playerHP, life=3;
+	int animationFrame = 0;
 
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame",sf::Style::Close);	
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(800.f, 600.0f));
@@ -25,23 +28,31 @@ int main()
 	backgroundtexture.loadFromFile("resource/MyMap2.png");
 	background.setTexture(&backgroundtexture);
 
-	Player player(&playerTexture, sf::Vector2u(3, 9), 0.3f, 300.0f,260.0f);
+	Player* player;
+	player = new Player(&playerTexture, sf::Vector2u(3, 9), 0.3f, 300.0f,260.0f);
 
 	std::vector<Platform> platforms;
 	std::vector<Platform> fire;
-	std::vector<Bullet>  bullet;
+	std::vector<Bullet*> playerBullet;
+	std::vector<Enemy*> monster;
 	
-	sf::Sprite monster[10];
-	sf::Texture monsterTexture;
 	sf::Texture bulletTexture;
-	bulletTexture.loadFromFile("resource/fireball.png");
+	bulletTexture.loadFromFile("resource/fireball1.png");
 
-	monsterTexture.loadFromFile("resource/fireball.png");
-	for (int i = 0; i < 9; i++) {
-		monster[i].setTexture(monsterTexture);
-		monster[i].setTextureRect(sf::IntRect(0, 0, 100, 100));
-		monster[i].setPosition(200*i, 500);
+	sf::Texture monsterTexture;
+	monsterTexture.loadFromFile("resource/monster1.png");
+
+	int posx[15];
+	for (int i = 0; i <= 14; i++)
+	{
+		if (posx[i] < 3000)
+		{
+			posx[i] = rand() % 14000;
+		}
 	}
+	for (int i = 0; i <= 14; i++)
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 200.0f, sf::Vector2f(posx[i], 350.0f)));
+	
 	
 
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 174.0f, 4 * 14.0f), sf::Vector2f(4 * 353.0f, 4 * 193.0f)));
@@ -117,6 +128,8 @@ int main()
 	while (window.isOpen()) 
 	{
 		deltaTime = clock.restart().asSeconds();
+		if (deltaTime > 1.f / 40.f)
+			deltaTime = 1.f / 40.f;
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -125,16 +138,16 @@ int main()
 		}
 		
 		//render
-		player.Update(deltaTime);
+		player->Update(deltaTime);
 		
 
-		Collider playerCollision = player.GetCollider();
+		Collider playerCollision = player->GetCollider();
 		sf::Vector2f direction;
 
 		for (Platform& fire : fire)
 			if (fire.GetCollider().CheckCollision(playerCollision, direction, 1.0f))
 			{
-				player.SetPosition(300.f, 250.f);
+				player->SetPosition(300.f, 250.f);
 				life--;
 				playerHP = 100;
 			}
@@ -142,38 +155,92 @@ int main()
 		for(Platform& platform : platforms)
 			if (platform.GetCollider().CheckCollision(playerCollision,direction,1.0f))
 			{
-				player.onCollision(direction);
+				player->onCollision(direction);
 			}
 		
+		
 		bulletTime = bullTime.getElapsedTime().asMilliseconds();
-
-		if (bulletTime > 200) {
+		if (bulletTime > 700) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-				bullet.push_back(Bullet(&bulletTexture, sf::Vector2u(), 0, sf::Vector2f(player.GetPosition().x + 10, player.GetPosition().y)));
+				if (player->getDirection() == true) {
+					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f));
+				
+				}
+				if (player->getDirection() == false) {
+					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x-25, player->GetPosition().y, -1.0f, 0.0f));
+				}
+
 				bullTime.restart();
 			}
 		}
-		for (Bullet& bullet : bullet) {
-			bullet.Update(deltaTime);
+		for (auto* bullet : playerBullet) {
+			bullet->Update();
+		}
+		
+		for (auto* i : monster)
+			i->Update(deltaTime, player);
+
+		int counter = 0;
+		int counter1 = 0;
+		for (auto* i : monster)
+		{
+			for (auto* Bullet : playerBullet)
+			{
+				if (i->GetGlobalBounds().intersects(Bullet->GetGlobalBounds()))
+				{
+					i->setHP(1);
+
+
+					Bullet->setPosition(-500.f, -500.f);
+
+
+
+				}
+				
+			}
+
+
+
+		}
+		for (auto* i : monster)
+		{
+			i->Update(deltaTime, player);
+
+			if (i->getHP() <= 0)
+			{
+				delete monster.at(counter);
+				monster.erase(monster.begin() + counter);
+				counter--;
+				
+			}
+			counter++;
 		}
 
 
-		view.setCenter(player.GetPosition());
-		std::cout << player.GetPosition().x/4 << " " << player.GetPosition().y/4 << std::endl;
+		view.setCenter(player->GetPosition());
+		std::cout << player->GetPosition().x/4 << " " << player->GetPosition().y/4 << std::endl;
 		
 		window.clear();		
 		window.draw(background);
-		window.setView(view);
-		for (int i = 0; i < 9; i++) {
-			//window.draw(monster[i]);
+		window.setView(view);	
+
+		for (auto* bullet : playerBullet) {
+			bullet->bulletDirection(player->getDirection());
 		}
-		player.Draw(window);
+
+		
 		//for (Platform& platform : platforms)
-		//	platform.Draw(window);
-		for (Bullet& bullet : bullet)
+			//platform.Draw(window);
+		
+		for (auto* i : monster)
+			i->Draw(window);
+
+		for (auto* bullet : playerBullet)
 		{
-			bullet.Draw(window);
+			bullet->Draw(window);
 		}
+		
+		player->Draw(window);
 
 		window.display();
 	}
