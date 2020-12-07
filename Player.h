@@ -9,11 +9,14 @@ public:
     Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float jumpHeight);
     ~Player();
 
+    void Update(float deltaTime, int hit);
+
     void Update(float deltatime);
     void Draw(sf::RenderWindow& window);
     void onCollision(sf::Vector2f direction);
     void SetPosition(float x, float y);
     bool getDirection();
+    int GetSpeed();
 
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
     sf::Vector2f GetPosition()      { return body.getPosition(); }

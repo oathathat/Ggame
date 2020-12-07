@@ -25,10 +25,11 @@ public:
     void onCollision(sf::Vector2f direction);
     void setPosition(float x, float y);
     
-
+    sf::Clock MoveClock;
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
     sf::Vector2f getPosition() { return body.getPosition(); }
     Collider GetCollider() { return Collider(body); }
+
 private:
    
     Animation animation;

@@ -16,6 +16,7 @@ int main()
 	//variable
 	int score, playerHP, life=3;
 	int animationFrame = 0;
+	int hit = 0;
 
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame",sf::Style::Close);	
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(800.f, 600.0f));
@@ -51,7 +52,7 @@ int main()
 		}
 	}
 	for (int i = 0; i <= 14; i++)
-		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 200.0f, sf::Vector2f(posx[i], 350.0f)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 200.0f, sf::Vector2f(posx[i], 4*129.25f)));
 	
 	
 
@@ -121,8 +122,10 @@ int main()
 	
 	float deltaTime = 0.0f;
 	float bulletTime = 0.0f;
+	float hiTtime = 0.0f;
 	sf::Clock clock;
 	sf::Clock bullTime;
+	sf::Clock hittime;
 	window.setFramerateLimit(60);		
 
 	while (window.isOpen()) 
@@ -137,9 +140,10 @@ int main()
 				window.close();
 		}
 		
-		//render
-		player->Update(deltaTime);
-		
+		//render		
+		player->Update(deltaTime,hit);
+		hit = 0;
+
 
 		Collider playerCollision = player->GetCollider();
 		sf::Vector2f direction;
@@ -173,35 +177,46 @@ int main()
 				bullTime.restart();
 			}
 		}
+		int counter1 = 0;
 		for (auto* bullet : playerBullet) {
 			bullet->Update();
+			if (bullet->GetPosition().x >= view.getCenter().x + 500 || bullet->GetPosition().x <= view.getCenter().x-500 )
+			{
+				delete playerBullet.at(counter1);
+				playerBullet.erase(playerBullet.begin() + counter1);
+				counter1--;
+			}
+			counter1++;
 		}
 		
-		for (auto* i : monster)
+		for (auto* i : monster) {
 			i->Update(deltaTime, player);
+		}
 
-		int counter = 0;
-		int counter1 = 0;
+		int counter = 0;		
+		hiTtime = hittime.getElapsedTime().asSeconds();		
 		for (auto* i : monster)
 		{
+			int counter = 0;
 			for (auto* Bullet : playerBullet)
 			{
 				if (i->GetGlobalBounds().intersects(Bullet->GetGlobalBounds()))
 				{
 					i->setHP(1);
-
-
-					Bullet->setPosition(-500.f, -500.f);
-
-
-
-				}
-				
+					delete playerBullet.at(counter);
+					playerBullet.erase(playerBullet.begin() + counter);
+					counter--;
+				}			
+				counter++;
 			}
-
-
-
+			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()) && hiTtime>=2)
+			{
+				hit = 1;
+				hittime.restart();
+			}
 		}
+		
+
 		for (auto* i : monster)
 		{
 			i->Update(deltaTime, player);
@@ -210,8 +225,7 @@ int main()
 			{
 				delete monster.at(counter);
 				monster.erase(monster.begin() + counter);
-				counter--;
-				
+				counter--;				
 			}
 			counter++;
 		}
@@ -230,7 +244,7 @@ int main()
 
 		
 		//for (Platform& platform : platforms)
-			//platform.Draw(window);
+		//	platform.Draw(window);
 		
 		for (auto* i : monster)
 			i->Draw(window);
@@ -243,6 +257,7 @@ int main()
 		player->Draw(window);
 
 		window.display();
+	
 	}
 	return 0;
 }

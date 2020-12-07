@@ -45,22 +45,24 @@ int Enemy::getHP()
 
 void Enemy::Update(float deltaTime, Player* player)
 {
-    int r = rand() % 20;
-   
-    velocity.x *= 0.0f;
+    MoveClock.getElapsedTime().asSeconds();
+     int r = rand() % 2;   
+    //velocity.x *= 0.0f;
     if (player->GetPosition().x + 600 > body.getPosition().x)
     {
-        if (r <= 0 && r<=10)
+        if    (r <= 0 && MoveClock.getElapsedTime().asSeconds()>1 )
         {
-            velocity.x -= speed;
-
-        }
-        else if (r >= 11 && r<=20)
-        {
-            velocity.x += speed;
-        }
+            velocity.x = speed;
+            MoveClock.restart();
         
+        }
+        else if (r >= 1 && MoveClock.getElapsedTime().asSeconds() > 1 )
+        {
+            velocity.x = -speed;
+            MoveClock.restart();
+        }       
     }
+  
 
 
    //   for (auto* bullet : bullets)

@@ -20,7 +20,7 @@ Player::~Player()
 
 }
 
-void Player::Update(float deltaTime)
+void Player::Update(float deltaTime,int hit)
 {
     velocity.x *= 0.0f;
         
@@ -40,6 +40,10 @@ void Player::Update(float deltaTime)
         velocity.y = -sqrt(2.0f * 981.0f * jumpHeight);
     }
 
+    if (hit==1)
+    {
+        velocity.x -= speed*10;
+    }
     
     velocity.y += 981.0f * deltaTime;
 
@@ -107,4 +111,9 @@ void Player::SetPosition(float x, float y)
 bool Player::getDirection()
 {
     return faceRight;
+}
+
+int Player::GetSpeed()
+{
+    return this->speed;
 }
