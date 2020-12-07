@@ -9,6 +9,7 @@
 #include"Bullet.h"
 #include"Enemy.h"
 #include <sstream>
+#include"Boss.h"
 
 
 int main()
@@ -36,12 +37,16 @@ int main()
 	std::vector<Platform> fire;
 	std::vector<Bullet*> playerBullet;
 	std::vector<Enemy*> monster;
+	std::vector<Boss*> boss1;
 	
 	sf::Texture bulletTexture;
 	bulletTexture.loadFromFile("resource/fireball1.png");
 
 	sf::Texture monsterTexture;
 	monsterTexture.loadFromFile("resource/monster1.png");
+
+	sf::Texture BossTexture;
+	BossTexture.loadFromFile("resource/monster1.png");
 
 	int posx[15];
 	for (int i = 0; i <= 14; i++)
@@ -53,8 +58,8 @@ int main()
 	}
 	for (int i = 0; i <= 14; i++)
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 200.0f, sf::Vector2f(posx[i], 4*129.25f)));
-	
-	
+		
+		boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(6, 2), 0.3f, 200.0f, sf::Vector2f(4* 353.0f, 4 * 130.0f)));
 
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 174.0f, 4 * 14.0f), sf::Vector2f(4 * 353.0f, 4 * 193.0f)));
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 14.0f), sf::Vector2f(4 * 1617.0f, 4 * 196.0f)));
@@ -87,8 +92,8 @@ int main()
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 65.0f, 4 * 8.0f), sf::Vector2f(4 * 1559.5f, 4 * 190.0f)));
 	
 	//bug
-	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 14.0f), sf::Vector2f(4 * 1648.0f, 4 * 193.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 32.0f, 4 * 15.0f), sf::Vector2f(4 * 1592.0f, 4 * 81.5f)));	
+	//platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 14.0f), sf::Vector2f(4 * 1648.0f, 4 * 193.0f)));
+	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 28.0f, 4 * 15.0f), sf::Vector2f(4 * 1592.0f, 4 * 81.5f)));	
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 15.0f), sf::Vector2f(4 * 1648.0f, 4 * 81.5f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 160.0f, 4 * 15.0f), sf::Vector2f(4 * 1768.0f, 4 * 81.5f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 96.0f, 4 * 48.0f), sf::Vector2f(4 * 1800.0f, 4 * 113.0f)));
@@ -173,7 +178,6 @@ int main()
 				if (player->getDirection() == false) {
 					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x-25, player->GetPosition().y, -1.0f, 0.0f));
 				}
-
 				bullTime.restart();
 			}
 		}
@@ -192,8 +196,11 @@ int main()
 		for (auto* i : monster) {
 			i->Update(deltaTime, player);
 		}
-
-		int counter = 0;		
+		for (auto* i :boss1) {
+			i->Update(deltaTime, player);
+		}
+		
+		int counter=0;
 		hiTtime = hittime.getElapsedTime().asSeconds();		
 		for (auto* i : monster)
 		{
@@ -216,6 +223,26 @@ int main()
 			}
 		}
 		
+		int counterB = 0;
+		for (auto* i : boss1)		
+		{			
+			for (auto* Bullet : playerBullet)
+			{
+				if (i->GetGlobalBounds().intersects(Bullet->GetGlobalBounds()))
+				{
+					i->setHP(1);
+					delete playerBullet.at(counterB);
+					playerBullet.erase(playerBullet.begin() + counterB);
+					counterB--;
+				}
+				counterB++;
+			}
+			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()) && hiTtime >= 2)
+			{
+				hit = 1;
+				hittime.restart();
+			}
+		}
 
 		for (auto* i : monster)
 		{
@@ -230,6 +257,18 @@ int main()
 			counter++;
 		}
 
+		for (auto* i :boss1)
+		{
+			i->Update(deltaTime, player);
+
+			if (i->getHP() <= 0)
+			{
+				delete boss1.at(counterB);
+				boss1.erase(boss1.begin() + counterB);
+				counterB--;
+			}
+			counterB++;
+		}
 
 		view.setCenter(player->GetPosition());
 		std::cout << player->GetPosition().x/4 << " " << player->GetPosition().y/4 << std::endl;
@@ -243,8 +282,8 @@ int main()
 		}
 
 		
-		//for (Platform& platform : platforms)
-		//	platform.Draw(window);
+		for (Platform& platform : platforms)
+			platform.Draw(window);
 		
 		for (auto* i : monster)
 			i->Draw(window);
@@ -254,6 +293,11 @@ int main()
 			bullet->Draw(window);
 		}
 		
+		for (auto* Boss1 : boss1) 
+		{
+			Boss1->Draw(window);
+		}
+	
 		player->Draw(window);
 
 		window.display();

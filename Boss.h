@@ -7,38 +7,37 @@
 #include <vector>
 #include "Player.h"
 
-class Enemy
+class Boss
 {
 public:
-    Enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
-    ~Enemy();
-
+	Boss(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
+	~Boss();
     void setHP(int x);
     int getHP();
 
     void Update(float deltatime, Player* player);
     void Draw(sf::RenderWindow& window);
 
-   
+
 
     void onCollision(sf::Vector2f direction);
     void setPosition(float x, float y);
-    
-    sf::Clock MoveClock;
+
+   
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
     sf::Vector2f getPosition() { return body.getPosition(); }
     Collider GetCollider() { return Collider(body); }
 
 private:
-   
+
     Animation animation;
     unsigned int row;
     unsigned int stop;
     float speed;
     bool faceRight;
     sf::RectangleShape body;
-   // sf::SoundBuffer soundJump;
-   // sf::Sound sJump;   
+    sf::SoundBuffer soundJump;
+    // sf::Sound sJump;   
 
     int hp;
     sf::Vector2f velocity;
@@ -46,6 +45,5 @@ private:
     float jumpHeight;
 
 
-  
 };
 

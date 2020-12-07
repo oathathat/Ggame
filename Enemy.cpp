@@ -73,6 +73,7 @@ void Enemy::Update(float deltaTime, Player* player)
    //    }
    //   }
 
+
     if (velocity.x != 0.0f)
     {
         row = 0;
@@ -83,9 +84,7 @@ void Enemy::Update(float deltaTime, Player* player)
     }
 
     animation.Update(row, deltaTime, faceRight);
-    body.setTextureRect(animation.uvRect);
-   
-
+    body.setTextureRect(animation.uvRect); 
     body.move(velocity * deltaTime);
 }
 

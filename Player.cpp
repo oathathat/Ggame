@@ -42,7 +42,10 @@ void Player::Update(float deltaTime,int hit)
 
     if (hit==1)
     {
+        if(faceRight)
         velocity.x -= speed*10;
+        else
+        velocity.x += speed * 10;        
     }
     
     velocity.y += 981.0f * deltaTime;
