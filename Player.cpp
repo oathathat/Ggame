@@ -6,10 +6,11 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 {
     this->speed = speed;
     this->jumpHeight = jumpHeight;
-    row = 0;
+    this->HP = HP;
+    this-> row = row;
     faceRight = true;
 
-    body.setSize(sf::Vector2f(60.0f, 70.0f));
+    body.setSize(sf::Vector2f(64.0f, 64.0f));
     body.setOrigin(body.getSize() / 2.0f);
     body.setPosition(300.f, 250.f);
     body.setTexture(texture);
@@ -33,8 +34,19 @@ void Player::Update(float deltaTime,int hit)
     {
         velocity.x += speed;        
     }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)&& canJump) 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && speedUp || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && speedUp)
+    {
+        speed = speed + 200;
+        jumpHeight = jumpHeight + 50;
+        speedUp = false;
+    }
+    else if (!speedUp)
+    {
+        speed = speed - 200;
+        jumpHeight = jumpHeight - 50;
+        speedUp = true;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)&& canJump && velocity.y<=0) 
     {
         canJump = false;
         velocity.y = -sqrt(2.0f * 981.0f * jumpHeight);
@@ -50,16 +62,7 @@ void Player::Update(float deltaTime,int hit)
     
     velocity.y += 981.0f * deltaTime;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && speedUp ||sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && speedUp)
-    {
-       speed = speed  +  200;
-       speedUp = false;
-    }
-    else if(!speedUp)
-    {
-        speed = speed - 200;
-        speedUp = true;
-    }
+    
 
     if (velocity.x == 0.0f)
     {
@@ -72,6 +75,11 @@ void Player::Update(float deltaTime,int hit)
             faceRight = true;
         else
             faceRight = false;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+       row=2;
+
     }
 
     animation.Update(row, deltaTime, faceRight);
@@ -111,6 +119,21 @@ void Player::SetPosition(float x, float y)
     body.setPosition(x, y);
 }
 
+void Player::setHP(int x)
+{
+    this->HP = x;
+}
+
+void Player::DecreaseHP(int x)
+{
+    this->HP-=x;
+}
+
+int Player::getHP()
+{
+    return this->HP;
+}
+
 bool Player::getDirection()
 {
     return faceRight;
@@ -120,3 +143,5 @@ int Player::GetSpeed()
 {
     return this->speed;
 }
+
+

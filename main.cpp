@@ -10,6 +10,7 @@
 #include"Enemy.h"
 #include <sstream>
 #include"Boss.h"
+#include "Item.h"
 
 
 int main()
@@ -23,7 +24,7 @@ int main()
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(800.f, 600.0f));
 
 	sf::Texture playerTexture;
-	playerTexture.loadFromFile("resource/tux_from_linux.png");
+	playerTexture.loadFromFile("resource/WizardOat.png");
 	
 	sf::RectangleShape background(sf::Vector2f(3569*4,200*4));
 	sf::Texture backgroundtexture;
@@ -31,14 +32,15 @@ int main()
 	background.setTexture(&backgroundtexture);
 
 	Player* player;
-	player = new Player(&playerTexture, sf::Vector2u(3, 9), 0.3f, 300.0f,260.0f);
+	player = new Player(&playerTexture, sf::Vector2u(3, 4), 0.2f, 300.0f,240.0f);
 
 	std::vector<Platform> platforms;
 	std::vector<Platform> fire;
 	std::vector<Bullet*> playerBullet;
 	std::vector<Enemy*> monster;
 	std::vector<Boss*> boss1;
-	
+	std::vector<Item*> coin;
+
 	sf::Texture bulletTexture;
 	bulletTexture.loadFromFile("resource/fireball1.png");
 
@@ -47,6 +49,9 @@ int main()
 
 	sf::Texture BossTexture;
 	BossTexture.loadFromFile("resource/monster1.png");
+
+	sf::Texture coinTexture;
+	coinTexture.loadFromFile("resource/coin1.png");
 
 	int posx[15];
 	for (int i = 0; i <= 14; i++)
@@ -60,6 +65,7 @@ int main()
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 200.0f, sf::Vector2f(posx[i], 4*129.25f)));
 		
 		boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(6, 2), 0.3f, 200.0f, sf::Vector2f(4* 353.0f, 4 * 130.0f)));
+		coin.push_back(new Item	(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 130.0f, 4 * 100.0f)));
 
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 174.0f, 4 * 14.0f), sf::Vector2f(4 * 353.0f, 4 * 193.0f)));
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 14.0f), sf::Vector2f(4 * 1617.0f, 4 * 196.0f)));
@@ -145,10 +151,9 @@ int main()
 				window.close();
 		}
 		
-		//render		
+		//render				
 		player->Update(deltaTime,hit);
 		hit = 0;
-
 
 		Collider playerCollision = player->GetCollider();
 		sf::Vector2f direction;
@@ -173,10 +178,11 @@ int main()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 				if (player->getDirection() == true) {
 					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f));
-				
+					
 				}
 				if (player->getDirection() == false) {
 					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x-25, player->GetPosition().y, -1.0f, 0.0f));
+					
 				}
 				bullTime.restart();
 			}
@@ -198,8 +204,11 @@ int main()
 		}
 		for (auto* i :boss1) {
 			i->Update(deltaTime, player);
+		}		
+		for (auto* i : coin) {
+			i->Update(deltaTime);
 		}
-		
+
 		int counter=0;
 		hiTtime = hittime.getElapsedTime().asSeconds();		
 		for (auto* i : monster)
@@ -209,7 +218,7 @@ int main()
 			{
 				if (i->GetGlobalBounds().intersects(Bullet->GetGlobalBounds()))
 				{
-					i->setHP(1);
+					i->DecreaseHP(1);
 					delete playerBullet.at(counter);
 					playerBullet.erase(playerBullet.begin() + counter);
 					counter--;
@@ -230,7 +239,7 @@ int main()
 			{
 				if (i->GetGlobalBounds().intersects(Bullet->GetGlobalBounds()))
 				{
-					i->setHP(1);
+					i->DecreaseHP(1);
 					delete playerBullet.at(counterB);
 					playerBullet.erase(playerBullet.begin() + counterB);
 					counterB--;
@@ -242,6 +251,18 @@ int main()
 				hit = 1;
 				hittime.restart();
 			}
+		}
+		int counterC = 0;
+		for (auto* i : coin)
+		{					
+				if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
+				{
+			
+					delete coin.at(counterB);
+					coin.erase(coin.begin() + counterB);
+					counterC--;
+				}
+				counterC++;		
 		}
 
 		for (auto* i : monster)
@@ -298,6 +319,11 @@ int main()
 			Boss1->Draw(window);
 		}
 	
+
+		for (auto* Coin : coin)
+		{
+			Coin->Draw(window);
+		}
 		player->Draw(window);
 
 		window.display();

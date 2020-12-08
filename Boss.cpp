@@ -24,7 +24,7 @@ Boss::~Boss()
 {
 }
 
-void Boss::setHP(int x)
+void Boss::DecreaseHP(int x)
 {
     this->hp -= x;
 }

@@ -13,8 +13,12 @@ public:
     void Draw(sf::RenderWindow& window);
     void onCollision(sf::Vector2f direction);
     void SetPosition(float x, float y);
+    void setHP(int x);
+    void DecreaseHP(int x);
+    int getHP();
     bool getDirection();
     int GetSpeed();
+    
 
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
     sf::Vector2f GetPosition()      { return body.getPosition(); }
@@ -29,7 +33,7 @@ private:
     unsigned int stop;
     float speed;
     bool faceRight;
-
+    int HP;
     sf::Vector2f velocity;
     bool canJump;
     float jumpHeight;

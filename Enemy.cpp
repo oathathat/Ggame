@@ -33,7 +33,7 @@ Enemy::~Enemy()
    
 }
 
-void Enemy::setHP(int x)
+void Enemy::DecreaseHP(int x)
 {
     this->hp -= x;
 }
@@ -47,7 +47,7 @@ void Enemy::Update(float deltaTime, Player* player)
 {
     MoveClock.getElapsedTime().asSeconds();
      int r = rand() % 2;   
-    //velocity.x *= 0.0f;
+   
     if (player->GetPosition().x + 600 > body.getPosition().x)
     {
         if    (r <= 0 && MoveClock.getElapsedTime().asSeconds()>1 )

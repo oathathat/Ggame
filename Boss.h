@@ -12,7 +12,7 @@ class Boss
 public:
 	Boss(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
 	~Boss();
-    void setHP(int x);
+    void DecreaseHP(int x);
     int getHP();
 
     void Update(float deltatime, Player* player);
