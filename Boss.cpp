@@ -10,7 +10,7 @@ Boss::Boss(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, floa
     this->speed = speed;
     row = 0;
     faceRight = true;
-
+    this-> goback = goback;
     this->hp = 10;
 
     body.setSize(sf::Vector2f(80, 80));
@@ -18,6 +18,8 @@ Boss::Boss(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, floa
     body.setScale(2.0, 2.0);
     body.setTexture(texture);
     body.setPosition(position);
+    this->spawnX = body.getPosition().x;
+    this->spawnY = body.getPosition().y;
 }
 
 Boss::~Boss()
@@ -36,8 +38,17 @@ int Boss::getHP()
 
 void Boss::Update(float deltaTime, Player* player)
 {       
-    //velocity.x *= 0.0f;
-    if (player->GetPosition().x + 500 > body.getPosition().x)
+    if (body.getPosition().x <= spawnX -500)
+    {
+        velocity.x = speed;
+        goback = 1;            
+    }   
+    if (body.getPosition().x >= spawnX + 500)
+    {
+        velocity.x = -speed;
+        goback = 1;
+    }
+    if (player->GetPosition().x + 500 > body.getPosition().x && body.getPosition().x>= spawnX -500 && goback == 0)
     {
         if (body.getPosition().x>player->GetPosition().x)
         {
@@ -48,8 +59,16 @@ void Boss::Update(float deltaTime, Player* player)
             velocity.x = speed;            
         }
     }
-
-
+    if (player->GetPosition().x + 600 < body.getPosition().x&& goback==1) {
+        goback = 0;
+        body.setPosition(spawnX,spawnY );
+        velocity.x = 0;
+    }
+    if (player->GetPosition().x - 600 > body.getPosition().x && goback == 1) {
+        goback = 0;
+        body.setPosition(spawnX, spawnY);
+        velocity.x = 0;
+    }
 
     //   for (auto* bullet : bullets)
     //   {

@@ -33,6 +33,7 @@ int main()
 
 	Player* player;
 	player = new Player(&playerTexture, sf::Vector2u(3, 4), 0.2f, 300.0f,240.0f);
+	player->SetPosition(3000.f*4, 60.0f*4);
 
 	std::vector<Platform> platforms;
 	std::vector<Platform> fire;
@@ -199,7 +200,7 @@ int main()
 		
 		
 		bulletTime = bullTime.getElapsedTime().asMilliseconds();
-		if (bulletTime > 700) {
+		if (bulletTime > 400) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 				if (player->getDirection() == true) {
 					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f));
@@ -283,8 +284,8 @@ int main()
 				if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 				{
 			
-					delete coin.at(counterB);
-					coin.erase(coin.begin() + counterB);
+					delete coin.at(counterC);
+					coin.erase(coin.begin() + counterC);
 					counterC--;
 				}
 				counterC++;		

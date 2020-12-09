@@ -43,7 +43,9 @@ private:
     sf::Vector2f velocity;
     bool canJump;
     float jumpHeight;
-
+    float spawnX;
+    float spawnY;
+    int goback=0;
 
 };
 

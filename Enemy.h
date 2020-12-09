@@ -37,6 +37,7 @@ private:
     float speed;
     bool faceRight;
     sf::RectangleShape body;
+
    // sf::SoundBuffer soundJump;
    // sf::Sound sJump;   
 
