@@ -52,17 +52,8 @@ void Player::Update(float deltaTime,int hit)
         velocity.y = -sqrt(2.0f * 981.0f * jumpHeight);
     }
 
-    if (hit==1)
-    {
-        if(faceRight)
-        velocity.x -= speed*10;
-        else
-        velocity.x += speed * 10;        
-    }
     
-    velocity.y += 981.0f * deltaTime;
-
-    
+    velocity.y += 981.0f * deltaTime;        
 
     if (velocity.x == 0.0f)
     {
@@ -80,6 +71,20 @@ void Player::Update(float deltaTime,int hit)
     {
        row=2;
 
+    }
+
+    if (hit == 1)
+    {
+        if (faceRight)
+        {
+            velocity.x -= speed * 10;
+            row = 3;
+        }
+        else
+        {
+            velocity.x += speed * 10;
+            row = 3;
+        }
     }
 
     animation.Update(row, deltaTime, faceRight);

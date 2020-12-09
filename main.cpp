@@ -53,19 +53,45 @@ int main()
 	sf::Texture coinTexture;
 	coinTexture.loadFromFile("resource/coin1.png");
 
-	int posx[15];
-	for (int i = 0; i <= 14; i++)
-	{
-		if (posx[i] < 3000)
-		{
-			posx[i] = rand() % 14000;
-		}
-	}
-	for (int i = 0; i <= 14; i++)
-		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 200.0f, sf::Vector2f(posx[i], 4*129.25f)));
+	
+	
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 130.846f, 4 * 129.25f-6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 508.797f, 4 * 129.25f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 240.761f, 4 * 129.25f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 925.0f, 4 * 129.25f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1043.0f, 4 * 129.25f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2043.0f, 4 * 129.25f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 340.0f, 4 * 82.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 690.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 400.0f, 4 * 99.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 750.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 850.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 975.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1028.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1105.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1300.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1460.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1840.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1940.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2060.0f, 4 * 178.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2297.0f, 4 * 129.25f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2467.0f, 4 * 129.25f - 6) ));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2753.0f, 4 * 129.25f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2930.0f, 4 * 129.25f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 910.0f, 4 * 66.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1000.0f, 4 * 66.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1250.0f, 4 * 66.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1200.0f, 4 * 66.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1430.0f, 4 * 66.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 1760.0f, 4 * 66.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2000.0f, 4 * 66.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2130.0f, 4 * 66.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2288.0f, 4 * 66.0f - 6)));
+		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2430.0f, 4 * 66.0f - 6)));
 		
-		boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(6, 2), 0.3f, 200.0f, sf::Vector2f(4* 353.0f, 4 * 130.0f)));
-		coin.push_back(new Item	(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 130.0f, 4 * 100.0f)));
+	boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(6, 2), 0.3f, 165.0f, sf::Vector2f(4* 3200.0f, 4 * 118.0f)));
+	coin.push_back(new Item	(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 130.0f, 4 * 100.0f)));
+    coin.push_back(new Item(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 1647.0f, 4 * 178.0f)));
 
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 174.0f, 4 * 14.0f), sf::Vector2f(4 * 353.0f, 4 * 193.0f)));
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 14.0f), sf::Vector2f(4 * 1617.0f, 4 * 196.0f)));
@@ -93,12 +119,11 @@ int main()
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 48.0f), sf::Vector2f(4 * 1408.0f, 4 * 98.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 31.0f), sf::Vector2f(4 * 1424.0f, 4 * 89.5f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 32.0f, 4 * 15.0f), sf::Vector2f(4 * 1448.0f, 4 * 81.5f)));
-
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 48.0f), sf::Vector2f(4 * 1504.0f, 4 * 162.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 65.0f, 4 * 8.0f), sf::Vector2f(4 * 1559.5f, 4 * 190.0f)));
 	
 	//bug
-	//platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 14.0f), sf::Vector2f(4 * 1648.0f, 4 * 193.0f)));
+	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 14.0f), sf::Vector2f(4 * 1648.0f, 4 * 193.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 28.0f, 4 * 15.0f), sf::Vector2f(4 * 1592.0f, 4 * 81.5f)));	
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 15.0f), sf::Vector2f(4 * 1648.0f, 4 * 81.5f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 160.0f, 4 * 15.0f), sf::Vector2f(4 * 1768.0f, 4 * 81.5f)));
@@ -296,24 +321,21 @@ int main()
 		
 		window.clear();		
 		window.draw(background);
-		window.setView(view);	
-
-		for (auto* bullet : playerBullet) {
-			bullet->bulletDirection(player->getDirection());
-		}
+		window.setView(view);			
 
 		
-		for (Platform& platform : platforms)
-			platform.Draw(window);
+		//for (Platform& platform : platforms)
+		//	platform.Draw(window);
 		
 		for (auto* i : monster)
 			i->Draw(window);
-
 		for (auto* bullet : playerBullet)
 		{
 			bullet->Draw(window);
 		}
-		
+		for (auto* bullet : playerBullet) {
+			bullet->bulletDirection(player->getDirection());
+		}
 		for (auto* Boss1 : boss1) 
 		{
 			Boss1->Draw(window);

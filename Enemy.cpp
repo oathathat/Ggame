@@ -5,9 +5,7 @@
 
 Enemy::Enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) :
     animation(texture, imageCount, switchTime)
-{
-
-    //this->initTexture();
+{    
     this->speed = speed;
     row = 0;
     faceRight = true;
@@ -16,10 +14,13 @@ Enemy::Enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, fl
 
     body.setSize(sf::Vector2f(80, 80));
     body.setOrigin(body.getSize() / 2.0f);
-    body.setScale(1.0, 1.0);
+    body.setScale(1.0, 1.0);  
     body.setTexture(texture);
     body.setPosition(position);
 
+    this->spawnX = body.getPosition().x;
+   
+  
     //Sound
     /*soundJump.loadFromFile("JumpSOUND.wav");
     sJump.setBuffer(soundJump);
@@ -48,7 +49,7 @@ void Enemy::Update(float deltaTime, Player* player)
     MoveClock.getElapsedTime().asSeconds();
      int r = rand() % 2;   
    
-    if (player->GetPosition().x + 600 > body.getPosition().x)
+    if (player->GetPosition().x + 500 >= body.getPosition().x && body.getPosition().x >= spawnX - 250 && body.getPosition().x <= spawnX+250)
     {
         if    (r <= 0 && MoveClock.getElapsedTime().asSeconds()>1 )
         {
@@ -61,6 +62,20 @@ void Enemy::Update(float deltaTime, Player* player)
             velocity.x = -speed;
             MoveClock.restart();
         }       
+    }
+    else if (body.getPosition().x <= spawnX - 250)
+    {
+        velocity.x = speed;
+        MoveClock.restart();
+    }
+    else if (body.getPosition().x >= spawnX + 250)
+    {
+        velocity.x = -speed;
+        MoveClock.restart();
+    }
+    else 
+    {
+        velocity.x = 0;      
     }
   
 
