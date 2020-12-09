@@ -1,10 +1,11 @@
 #include <SFML/Graphics.hpp>
+#include<SFML/Audio.hpp>
 #include <iostream>
 #include"Animation.h"
 #include"Player.h"
 #include "Platform.h"
 #include <stdlib.h>
-#include <math.h>
+#include <time.h>
 #include<vector>
 #include"Bullet.h"
 #include"Enemy.h"
@@ -41,6 +42,8 @@ int main()
 	std::vector<Enemy*> monster;
 	std::vector<Boss*> boss1;
 	std::vector<Item*> coin;
+	std::vector<Item*> potion;
+
 
 	sf::Texture bulletTexture;
 	bulletTexture.loadFromFile("resource/fireball1.png");
@@ -54,6 +57,8 @@ int main()
 	sf::Texture coinTexture;
 	coinTexture.loadFromFile("resource/coin1.png");
 
+	sf::Texture potionTexture;
+	potionTexture.loadFromFile("resource/HPpotion.png");
 	
 	
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 130.846f, 4 * 129.25f-6)));
@@ -92,7 +97,7 @@ int main()
 		
 	boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(6, 2), 0.3f, 165.0f, sf::Vector2f(4* 3200.0f, 4 * 118.0f)));
 	coin.push_back(new Item	(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 130.0f, 4 * 100.0f)));
-    coin.push_back(new Item(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 1647.0f, 4 * 178.0f)));
+    coin.push_back(new Item (&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 1647.0f, 4 * 178.0f)));
 
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 174.0f, 4 * 14.0f), sf::Vector2f(4 * 353.0f, 4 * 193.0f)));
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 14.0f), sf::Vector2f(4 * 1617.0f, 4 * 196.0f)));
@@ -234,7 +239,9 @@ int main()
 		for (auto* i : coin) {
 			i->Update(deltaTime);
 		}
-
+		for (auto* i : potion) {
+			i->Update(deltaTime);
+		}
 		int counter=0;
 		hiTtime = hittime.getElapsedTime().asSeconds();		
 		for (auto* i : monster)
@@ -283,12 +290,24 @@ int main()
 		{					
 				if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 				{
-			
+				//	score += score + 10;
 					delete coin.at(counterC);
 					coin.erase(coin.begin() + counterC);
 					counterC--;
 				}
 				counterC++;		
+		}
+
+		int counterD = 0;
+		for (auto* i : potion)
+		{
+			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
+			{
+				delete potion.at(counterD);
+				potion.erase(potion.begin() + counterD);
+				counterD--;
+			}
+			counterD++;
 		}
 
 		for (auto* i : monster)
@@ -299,6 +318,7 @@ int main()
 			{
 				delete monster.at(counter);
 				monster.erase(monster.begin() + counter);
+				coin.push_back(new Item(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y)));
 				counter--;				
 			}
 			counter++;
@@ -348,7 +368,6 @@ int main()
 			Coin->Draw(window);
 		}
 		player->Draw(window);
-
 		window.display();
 	
 	}

@@ -6,6 +6,7 @@
 #include "Bullet.h"
 #include <vector>
 #include "Player.h"
+#include<SFML/Audio.hpp>
 
 class Boss
 {

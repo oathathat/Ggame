@@ -2,6 +2,7 @@
 #include<SFML/Graphics.hpp>
 #include"Collider.h"
 #include "Player.h"
+#include<SFML/Audio.hpp>
 class Item
 {
 public:

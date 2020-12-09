@@ -1,6 +1,7 @@
 #pragma once
 #include<SFML/Graphics.hpp>
 #include"Collider.h"
+#include<SFML/Audio.hpp>
 
 class Bullet
 {

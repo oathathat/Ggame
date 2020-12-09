@@ -20,7 +20,7 @@ Enemy::Enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, fl
 
     this->spawnX = body.getPosition().x;
    
-  
+    srand(time(0));
     //Sound
     /*soundJump.loadFromFile("JumpSOUND.wav");
     sJump.setBuffer(soundJump);

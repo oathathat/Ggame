@@ -6,7 +6,7 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 {
     this->speed = speed;
     this->jumpHeight = jumpHeight;
-    this->HP = HP;
+    this->HP = 100;
     this-> row = row;
     faceRight = true;
 

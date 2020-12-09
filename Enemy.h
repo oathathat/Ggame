@@ -6,6 +6,8 @@
 #include "Bullet.h"
 #include <vector>
 #include "Player.h"
+#include<time.h>
+
 
 class Enemy
 {
@@ -17,17 +19,15 @@ public:
     int getHP();
 
     void Update(float deltatime, Player* player);
-    void Draw(sf::RenderWindow& window);
-
-   
-
+    void Draw(sf::RenderWindow& window);       
     void onCollision(sf::Vector2f direction);
     void setPosition(float x, float y);
+
     
     sf::Clock MoveClock;
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
-    sf::Vector2f getPosition() { return body.getPosition(); }
-    Collider GetCollider() { return Collider(body); }
+    sf::Vector2f getPosition()      { return body.getPosition(); }
+    Collider GetCollider()          { return Collider(body); }
 
 private:
    
