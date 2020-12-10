@@ -17,7 +17,8 @@
 int main()
 {
 	//variable
-	int score=0, life=3;	
+	int score = 0;
+	int life=3;	
 	int hit = 0;
 	int ulti = 0;
 	unsigned int randomPercent=33;
@@ -60,6 +61,9 @@ int main()
 	sf::Texture bulletTexture;
 	bulletTexture.loadFromFile("resource/fireball1.png");
 
+	sf::Texture specialTexture;
+	specialTexture.loadFromFile("resource/Ufireball1.png");
+
 	sf::Texture monsterTexture;
 	monsterTexture.loadFromFile("resource/monster1.png");
 
@@ -77,6 +81,8 @@ int main()
 
 	sf::Texture heartTexture;
 	heartTexture.loadFromFile("resource/heart1.png");
+
+
 		
 	
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 130.846f, 4 * 129.25f-6)));
@@ -194,8 +200,8 @@ int main()
 		if (deltaTime > 1.f / 40.f)
 			deltaTime = 1.f / 40.f;
 		srand(time(0));
-		int random = rand()%5;
-		int hrandom = rand() % 10;
+		int random = rand()%4;
+		int hrandom = rand() % 12;
 		int manaRandom = rand() % randomPercent;
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -223,28 +229,27 @@ int main()
 			if (platform.GetCollider().CheckCollision(playerCollision,direction,1.0f))
 			{
 				player->onCollision(direction);
-			}
-		
+			}		
 		
 		bulletTime = bullTime.getElapsedTime().asMilliseconds();
 		if (bulletTime > 400) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 				if (player->getDirection() == true) {
-					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f,1.0f,1.0f));
+					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f,1.0f,1.0f,1));
 					
 				}
 				if (player->getDirection() == false) {
-					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x-25, player->GetPosition().y, -1.0f, 0.0f,1.0f,1.0f));					
+					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x-25, player->GetPosition().y, -1.0f, 0.0f,1.0f,1.0f,1));					
 				}
 				bullTime.restart();
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && ulti > 0) {
 				if (player->getDirection() == true) {
-					special.push_back(new Bullet(&bulletTexture, 5, player->GetPosition().x + 40, player->GetPosition().y, 1.0f, 0.0f, 2.0f, 2.0f));
+					special.push_back(new Bullet(&specialTexture, 5, player->GetPosition().x + 40, player->GetPosition().y, 1.0f, 0.0f, 2.0f, 2.0f,2));
 
 				}
 				if (player->getDirection() == false) {
-					special.push_back(new Bullet(&bulletTexture, 5, player->GetPosition().x - 40, player->GetPosition().y, -1.0f, 0.0f, 2.0f, 2.0f));
+					special.push_back(new Bullet(&specialTexture, 5, player->GetPosition().x - 40, player->GetPosition().y, -1.0f, 0.0f, 2.0f, 2.0f,2));
 				}
 				ulti = ulti - 1;
 				bullTime.restart();

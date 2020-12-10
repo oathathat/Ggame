@@ -2,13 +2,22 @@
 #include <iostream>
 #include "Enemy.h"
 
-Bullet::Bullet(sf::Texture* texture, float speed, float posx, float posy, float dirx, float diry,float scaleX,float scaleY)
+Bullet::Bullet(sf::Texture* texture, float speed, float posx, float posy, float dirx, float diry,float scaleX,float scaleY,int mode)
 
 {
-    SizeX = texture->getSize().x / 4;
+    if (mode == 1) 
+    {
+        SizeX = texture->getSize().x / 4;
+        body.setSize(sf::Vector2f(423 / 30 * 4, 110 / 20 * 4));
+    }
+
+    if (mode == 2)
+    {
+        SizeX = texture->getSize().x / 6;
+        body.setSize(sf::Vector2f(40 * 4, 40 * 4));
+    }
     SizeY = texture->getSize().y / 2;
-    this->speed = speed;
-    body.setSize(sf::Vector2f(423/30*4, 110/20*4));
+    this->speed = speed;   
     body.setOrigin(body.getSize() / 2.0f);
     body.setScale(scaleX, scaleY);
     body.setTexture(texture);

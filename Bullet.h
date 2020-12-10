@@ -6,7 +6,7 @@
 class Bullet
 {
 public:
-	Bullet(sf::Texture* texture, float speed, float posx, float posy, float dirx, float diry,float scaleX, float scaleY);
+	Bullet(sf::Texture* texture, float speed, float posx, float posy, float dirx, float diry,float scaleX, float scaleY,int mode);
 	~Bullet();	
 	void setPosition(float x, float y);
 
