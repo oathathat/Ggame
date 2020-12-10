@@ -17,9 +17,10 @@
 int main()
 {
 	//variable
-	int score, playerHP, life=3;
-	int animationFrame = 0;
+	int score=0, life=3;	
 	int hit = 0;
+	int ulti = 0;
+	unsigned int randomPercent=33;
 
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame",sf::Style::Close);	
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(800.f, 600.0f));
@@ -32,6 +33,13 @@ int main()
 	backgroundtexture.loadFromFile("resource/MyMap2.png");
 	background.setTexture(&backgroundtexture);
 
+	sf::RectangleShape HPbar(sf::Vector2f(500,500));
+	sf::Texture HPbarTexture;
+	HPbarTexture.loadFromFile("resource/HPbar");
+	HPbar.setTexture(&HPbarTexture);
+
+	
+
 	Player* player;
 	player = new Player(&playerTexture, sf::Vector2u(3, 4), 0.2f, 300.0f,240.0f);
 	player->SetPosition(3000.f*4, 60.0f*4);
@@ -39,10 +47,14 @@ int main()
 	std::vector<Platform> platforms;
 	std::vector<Platform> fire;
 	std::vector<Bullet*> playerBullet;
+	std::vector<Bullet*> special;
 	std::vector<Enemy*> monster;
 	std::vector<Boss*> boss1;
 	std::vector<Item*> coin;
 	std::vector<Item*> potion;
+	std::vector<Item*> mana;
+	std::vector<Item*> heart;
+
 
 
 	sf::Texture bulletTexture;
@@ -59,7 +71,13 @@ int main()
 
 	sf::Texture potionTexture;
 	potionTexture.loadFromFile("resource/HPpotion.png");
-	
+
+	sf::Texture manaTexture;
+	manaTexture.loadFromFile("resource/mana.png");
+
+	sf::Texture heartTexture;
+	heartTexture.loadFromFile("resource/heart1.png");
+		
 	
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 130.846f, 4 * 129.25f-6)));
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 508.797f, 4 * 129.25f - 6)));
@@ -175,6 +193,10 @@ int main()
 		deltaTime = clock.restart().asSeconds();
 		if (deltaTime > 1.f / 40.f)
 			deltaTime = 1.f / 40.f;
+		srand(time(0));
+		int random = rand()%5;
+		int hrandom = rand() % 10;
+		int manaRandom = rand() % randomPercent;
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -194,7 +216,7 @@ int main()
 			{
 				player->SetPosition(300.f, 250.f);
 				life--;
-				playerHP = 100;
+				player->setHP(100);
 			}
 
 		for(Platform& platform : platforms)
@@ -208,16 +230,28 @@ int main()
 		if (bulletTime > 400) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 				if (player->getDirection() == true) {
-					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f));
+					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f,1.0f,1.0f));
 					
 				}
 				if (player->getDirection() == false) {
-					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x-25, player->GetPosition().y, -1.0f, 0.0f));
-					
+					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x-25, player->GetPosition().y, -1.0f, 0.0f,1.0f,1.0f));					
 				}
 				bullTime.restart();
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && ulti > 0) {
+				if (player->getDirection() == true) {
+					special.push_back(new Bullet(&bulletTexture, 5, player->GetPosition().x + 40, player->GetPosition().y, 1.0f, 0.0f, 2.0f, 2.0f));
+
+				}
+				if (player->getDirection() == false) {
+					special.push_back(new Bullet(&bulletTexture, 5, player->GetPosition().x - 40, player->GetPosition().y, -1.0f, 0.0f, 2.0f, 2.0f));
+				}
+				ulti = ulti - 1;
+				bullTime.restart();
+			}
 		}
+		
+
 		int counter1 = 0;
 		for (auto* bullet : playerBullet) {
 			bullet->Update();
@@ -229,6 +263,18 @@ int main()
 			}
 			counter1++;
 		}
+		int counter11 = 0;
+		for (auto* bullet : special) {
+			bullet->Update();
+			if (bullet->GetPosition().x >= view.getCenter().x + 500 || bullet->GetPosition().x <= view.getCenter().x - 500)
+			{
+				delete special.at(counter11);
+				special.erase(special.begin() + counter11);
+				counter11--;
+			}
+			counter11++;
+		}
+
 		
 		for (auto* i : monster) {
 			i->Update(deltaTime, player);
@@ -242,8 +288,19 @@ int main()
 		for (auto* i : potion) {
 			i->Update(deltaTime);
 		}
+		for (auto* i : mana) {
+			i->Update(deltaTime);
+		}
+		for (auto* i : heart) {
+			i->Update(deltaTime);
+		}
+		for (auto* i : special) {
+			i->Update();
+		}
+
 		int counter=0;
 		hiTtime = hittime.getElapsedTime().asSeconds();		
+
 		for (auto* i : monster)
 		{
 			int counter = 0;
@@ -268,13 +325,13 @@ int main()
 		int counterB = 0;
 		for (auto* i : boss1)		
 		{			
-			for (auto* Bullet : playerBullet)
+			for (auto* Bullet : special)
 			{
 				if (i->GetGlobalBounds().intersects(Bullet->GetGlobalBounds()))
 				{
-					i->DecreaseHP(1);
-					delete playerBullet.at(counterB);
-					playerBullet.erase(playerBullet.begin() + counterB);
+					i->DecreaseHP(100);
+					delete special.at(counterB);
+					special.erase(special.begin() + counterB);
 					counterB--;
 				}
 				counterB++;
@@ -290,7 +347,7 @@ int main()
 		{					
 				if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 				{
-				//	score += score + 10;
+					score = score + 10;
 					delete coin.at(counterC);
 					coin.erase(coin.begin() + counterC);
 					counterC--;
@@ -303,11 +360,38 @@ int main()
 		{
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 			{
+				player->DecreaseHP(-10);
 				delete potion.at(counterD);
 				potion.erase(potion.begin() + counterD);
 				counterD--;
 			}
 			counterD++;
+		}
+
+		int counterE = 0;
+		for (auto* i : heart)
+		{
+			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
+			{
+				life = life + 1;
+				delete heart.at(counterE);
+				heart.erase(heart.begin() + counterE);
+				counterE--;
+			}
+			counterE++;
+		}
+
+		int counterF = 0;
+		for (auto* i : mana)
+		{
+			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
+			{			
+				ulti = ulti+1 ;
+				delete mana.at(counterF);
+				mana.erase(mana.begin() + counterF);
+				counterF--;
+			}
+			counterF++;
 		}
 
 		for (auto* i : monster)
@@ -316,25 +400,37 @@ int main()
 
 			if (i->getHP() <= 0)
 			{
+				if (manaRandom == 0) {
+					mana.push_back(new Item(&manaTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y)));
+				}
+				else if (hrandom == 0) {
+					heart.push_back(new Item(&heartTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y + 20)));
+				}
+				else if (random == 0) {
+					potion.push_back(new Item(&potionTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y + 20)));
+				}						
 				delete monster.at(counter);
-				monster.erase(monster.begin() + counter);
-				coin.push_back(new Item(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y)));
+				monster.erase(monster.begin() + counter);				
 				counter--;				
+				randomPercent--;
 			}
 			counter++;
 		}
-
+		if (randomPercent == 0) {
+			randomPercent = 1;
+		}
+		int bosscounter = 0;
 		for (auto* i :boss1)
 		{
 			i->Update(deltaTime, player);
 
 			if (i->getHP() <= 0)
 			{
-				delete boss1.at(counterB);
-				boss1.erase(boss1.begin() + counterB);
-				counterB--;
+				delete boss1.at(bosscounter);
+				boss1.erase(boss1.begin() + bosscounter);
+				bosscounter--;
 			}
-			counterB++;
+			bosscounter++;
 		}
 
 		view.setCenter(player->GetPosition());
@@ -354,18 +450,37 @@ int main()
 		{
 			bullet->Draw(window);
 		}
+		for (auto* bullet : special)
+		{
+			bullet->Draw(window);
+		}
 		for (auto* bullet : playerBullet) {
+			bullet->bulletDirection(player->getDirection());
+		}
+		for (auto* bullet : special) {
 			bullet->bulletDirection(player->getDirection());
 		}
 		for (auto* Boss1 : boss1) 
 		{
 			Boss1->Draw(window);
-		}
-	
+		}	
 
 		for (auto* Coin : coin)
 		{
 			Coin->Draw(window);
+		}
+
+		for (auto* Potion : potion)
+		{
+			Potion->Draw(window);
+		}
+		for (auto* Potion : mana)
+		{
+			Potion->Draw(window);
+		}
+		for (auto* Heart : heart)
+		{
+			Heart->Draw(window);
 		}
 		player->Draw(window);
 		window.display();

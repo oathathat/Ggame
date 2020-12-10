@@ -20,7 +20,7 @@ Enemy::Enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, fl
 
     this->spawnX = body.getPosition().x;
    
-    srand(time(0));
+   
     //Sound
     /*soundJump.loadFromFile("JumpSOUND.wav");
     sJump.setBuffer(soundJump);
@@ -47,6 +47,7 @@ int Enemy::getHP()
 void Enemy::Update(float deltaTime, Player* player)
 {
     MoveClock.getElapsedTime().asSeconds();
+    srand(time(0));
      int r = rand() % 2;   
    
     if (player->GetPosition().x + 500 >= body.getPosition().x && body.getPosition().x >= spawnX - 250 && body.getPosition().x <= spawnX+250)
