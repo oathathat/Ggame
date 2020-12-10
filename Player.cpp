@@ -10,7 +10,7 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
     this-> row = row;
     this->spawnX = 510.f;
     this->spawnY = 240.f;
-
+    this->life = 3;
     
     faceRight = true;
 

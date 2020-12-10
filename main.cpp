@@ -18,7 +18,6 @@ int main()
 {
 	//variable
 	int score = 0;
-	int life=3;	
 	int hit = 0;
 	int ulti = 0;
 	unsigned int randomPercent=33;
@@ -94,6 +93,24 @@ int main()
 	lifeText.setFont(lifeFont);
 	lifeText.setString("LIFE");
 	lifeText.setFillColor(sf::Color::Red);
+
+	sf::Clock Timer;
+	int timeCount = 0;
+	sf::Text gameTime;
+	gameTime.setCharacterSize(50);
+	gameTime.setPosition({ 140 ,240 });
+	gameTime.setFont(lifeFont);
+	gameTime.setString(std::to_string(timeCount));
+	gameTime.setFillColor(sf::Color::Red);
+
+	sf::Text lifeNum;
+	lifeNum.setCharacterSize(50);
+	lifeNum.setPosition({ 140 ,240 });
+	lifeNum.setFont(lifeFont);
+	lifeNum.setString(std::to_string(player->getLife()));
+	lifeNum.setFillColor(sf::Color::Cyan);
+
+
 		
 	
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 130.846f, 4 * 129.25f-6)));
@@ -203,13 +220,19 @@ int main()
 	sf::Clock clock;
 	sf::Clock bullTime;
 	sf::Clock hittime;
+	
 	window.setFramerateLimit(60);		
 
 	while (window.isOpen()) 
 	{
+		timeCount = Timer.getElapsedTime().asSeconds();
+		gameTime.setString(std::to_string(timeCount));
+		lifeNum.setString(std::to_string(player->getLife()));
+
+
 		deltaTime = clock.restart().asSeconds();
 		if (deltaTime > 1.f / 40.f)
-			deltaTime = 1.f / 40.f;
+			deltaTime = 1.f / 40.f;		
 		srand(time(0));
 		int random = rand()%4;
 		int hrandom = rand() % 12;
@@ -460,44 +483,57 @@ int main()
 				if (player->GetPosition().y > 84*4) {
 					view.setCenter(player->GetPosition());
 					lifeText.setPosition(player->GetPosition().x-395,player->GetPosition().y-300);
+					lifeNum.setPosition(player->GetPosition().x -250, player->GetPosition().y - 300);
 					HPbar.setPosition(player->GetPosition().x + 300, player->GetPosition().y -275);
+					gameTime.setPosition(player->GetPosition().x, player->GetPosition().y -300);
 				}
 				else
 				{
 					view.setCenter(player->GetPosition().x,84*4);
 					lifeText.setPosition(player->GetPosition().x - 395, 84 * 4-300);
+					lifeNum.setPosition(player->GetPosition().x - 250,  84 * 4 - 300);
 					HPbar.setPosition(player->GetPosition().x + 300, 84 * 4 - 275);
+					gameTime.setPosition(player->GetPosition().x, 84 * 4 - 300);
 				}
 			}
 			else if (player->GetPosition().y >= 125 * 4) {
 				view.setCenter(player->GetPosition().x, 125 * 4);
 				lifeText.setPosition(player->GetPosition().x - 395, 125 * 4 - 300);
+				lifeNum.setPosition(player->GetPosition().x - 250, 125 * 4 - 300);
 				HPbar.setPosition(player->GetPosition().x + 300, 125 * 4 - 275);
+				gameTime.setPosition(player->GetPosition().x , 125 * 4 - 300);
 			}
 		}
+
 		else {
 			if (player->GetPosition().y < 125 * 4) {
 				if (player->GetPosition().y > 84 * 4) {
-					view.setCenter(499,player->GetPosition().y);
-					lifeText.setPosition	(104, player->GetPosition().y - 300);
-					HPbar.setPosition		(799, player->GetPosition().y - 275);
+					view.setCenter				(499, player->GetPosition().y);
+					lifeText.setPosition		(104, player->GetPosition().y - 300);
+					lifeNum.setPosition			(499-250, player->GetPosition().y - 300);
+					HPbar.setPosition			(799, player->GetPosition().y - 275);
+					gameTime.setPosition		(499, player->GetPosition().y - 300);
 				}
 				else
 				{
-					view.setCenter(499, 84 * 4);
-					lifeText.setPosition(104, 84 * 4 - 300);
-					HPbar.setPosition(799, 84*4 - 275);
+					view.setCenter		(499, 84*4);
+					lifeText.setPosition(104, 84*4 - 300);
+					lifeNum.setPosition	(499-250, 84*4 - 300);
+					HPbar.setPosition	(799, 84*4 - 275);
+					gameTime.setPosition(499, 84*4 - 300);
 				}
 			}
-			else if (player->GetPosition().y >= 125 * 4) {
-				view.setCenter(499, 125 * 4);
-				lifeText.setPosition(104, 125 * 4 - 300);
-				HPbar.setPosition(799, 125 * 4 - 275);
-
+			else if (player->GetPosition().y >= 125*4) {
+				view.setCenter			(499,	125*4);
+				lifeText.setPosition	(104,	125*4 - 300);
+				lifeNum.setPosition		(499-250,	125*4 - 300);
+				HPbar.setPosition		(799,	125*4 - 275);
+				gameTime.setPosition	(499,	125*4 - 300);
 
 			}
-
 		}
+
+
 		if (player->getHP() >= 100) {
 			animationFrame = 0;
 		}
@@ -520,6 +556,8 @@ int main()
 		window.setView(view);
 		window.draw(background);
 		window.draw(lifeText);
+		window.draw(lifeNum);
+		window.draw(gameTime);
 		window.draw(HPbar);
 				
 		
