@@ -43,7 +43,7 @@ int main()
 
 	Player* player;
 	player = new Player(&playerTexture, sf::Vector2u(3, 4), 0.2f, 300.0f,240.0f);
-	player->SetPosition(3000.f*4, 60.0f*4);
+	player->SetPosition(player->getspawnX(), player->getspawnY());
 
 	std::vector<Platform> platforms;
 	std::vector<Platform> fire;
@@ -220,8 +220,8 @@ int main()
 		for (Platform& fire : fire)
 			if (fire.GetCollider().CheckCollision(playerCollision, direction, 1.0f))
 			{
-				player->SetPosition(300.f, 250.f);
-				life--;
+				player->SetPosition(501.f, 250.f);
+				player->DecreaseLife(1);
 				player->setHP(100);
 			}
 
@@ -233,7 +233,7 @@ int main()
 		
 		bulletTime = bullTime.getElapsedTime().asMilliseconds();
 		if (bulletTime > 400) {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {				
 				if (player->getDirection() == true) {
 					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f,1.0f,1.0f,1));
 					
@@ -322,6 +322,7 @@ int main()
 			}
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()) && hiTtime>=2)
 			{
+				player->DecreaseHP(25);
 				hit = 1;
 				hittime.restart();
 			}
@@ -343,6 +344,8 @@ int main()
 			}
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()) && hiTtime >= 2)
 			{
+				player->DecreaseLife(1);
+				player->setHP(100);
 				hit = 1;
 				hittime.restart();
 			}
@@ -378,7 +381,7 @@ int main()
 		{
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 			{
-				life = life + 1;
+				player->DecreaseLife(-1);
 				delete heart.at(counterE);
 				heart.erase(heart.begin() + counterE);
 				counterE--;
@@ -406,10 +409,10 @@ int main()
 			if (i->getHP() <= 0)
 			{
 				if (manaRandom == 0) {
-					mana.push_back(new Item(&manaTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y)));
+					mana.push_back(new Item(&manaTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y+25)));
 				}
 				else if (hrandom == 0) {
-					heart.push_back(new Item(&heartTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y + 20)));
+					heart.push_back(new Item(&heartTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y + 10)));
 				}
 				else if (random == 0) {
 					potion.push_back(new Item(&potionTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y + 20)));
@@ -437,8 +440,21 @@ int main()
 			}
 			bosscounter++;
 		}
-
-		view.setCenter(player->GetPosition());
+		if (player->GetPosition().x < 3569*4-500&& player->GetPosition().x > 300) {
+			if (player->GetPosition().y < 125 * 4) {
+				if (player->GetPosition().y > 82*4) {
+					view.setCenter(player->GetPosition());
+				}
+				else
+				{
+					view.setCenter(player->GetPosition().x,82*4);
+				}
+			}
+			else if (player->GetPosition().y >= 125 * 4) {
+				view.setCenter(player->GetPosition().x, 125 * 4);
+			}
+		}
+		
 		std::cout << player->GetPosition().x/4 << " " << player->GetPosition().y/4 << std::endl;
 		
 		window.clear();		
@@ -448,7 +464,11 @@ int main()
 		
 		//for (Platform& platform : platforms)
 		//	platform.Draw(window);
-		
+		if (player->getHP() <= 0) {
+			player->SetPosition(player->getspawnX(), player->getspawnY());
+			player->setHP(100);
+			player->DecreaseLife(1);
+		}
 		for (auto* i : monster)
 			i->Draw(window);
 		for (auto* bullet : playerBullet)

@@ -22,6 +22,7 @@ public:
     void Draw(sf::RenderWindow& window);       
     void onCollision(sf::Vector2f direction);
     void setPosition(float x, float y);
+    int getATK();
 
     
     sf::Clock MoveClock;
@@ -46,7 +47,7 @@ private:
     bool canJump;
     float jumpHeight;
     float spawnX;
-
+    int ATK;
   
 };
 

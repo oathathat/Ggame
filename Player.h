@@ -13,11 +13,20 @@ public:
     void Draw(sf::RenderWindow& window);
     void onCollision(sf::Vector2f direction);
     void SetPosition(float x, float y);
-    void setHP(int x);
+    void setHP(int x);  
     void DecreaseHP(int x);
+    void setLife(int x);
+    void DecreaseLife(int x);
     int getHP();
     bool getDirection();
     int GetSpeed();
+    int getLife();
+    void setspawnX(float x);
+    void setspawnY(float y);
+    float getspawnX();
+    float getspawnY();
+
+
     
 
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
@@ -38,4 +47,7 @@ private:
     bool canJump;
     float jumpHeight;
     bool speedUp;
+    int life;
+    float spawnX;
+    float spawnY;
 };

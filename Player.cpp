@@ -6,8 +6,12 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 {
     this->speed = speed;
     this->jumpHeight = jumpHeight;
-    this->HP = 5;
+    this->HP = 100;
     this-> row = row;
+    this->spawnX = 510.f;
+    this->spawnY = 240.f;
+
+    
     faceRight = true;
 
     body.setSize(sf::Vector2f(64.0f, 64.0f));
@@ -70,7 +74,6 @@ void Player::Update(float deltaTime,int hit)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
        row=2;
-
     }
 
     if (hit == 1)
@@ -129,10 +132,23 @@ void Player::setHP(int x)
     this->HP = x;
 }
 
+
 void Player::DecreaseHP(int x)
 {
     this->HP-=x;
 }
+
+void Player::setLife(int x)
+{
+    this->life = x;
+}
+
+void Player::DecreaseLife(int x)
+{
+    this->life -= x;
+}
+
+
 
 int Player::getHP()
 {
@@ -147,6 +163,32 @@ bool Player::getDirection()
 int Player::GetSpeed()
 {
     return this->speed;
+}
+
+int Player::getLife()
+{
+    return this->life;
+}
+
+void Player::setspawnX(float x)
+{
+    this->spawnX = x;
+}
+
+void Player::setspawnY(float y)
+{
+    this->spawnY = y;
+}
+
+
+float Player::getspawnX()
+{
+    return this->spawnX;
+}
+
+float Player::getspawnY()
+{
+    return this->spawnY;
 }
 
 

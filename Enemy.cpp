@@ -138,3 +138,8 @@ void Enemy::setPosition(float x, float y)
     body.setPosition(x, y);
 }
 
+int Enemy::getATK()
+{
+    return this->ATK;
+}
+
