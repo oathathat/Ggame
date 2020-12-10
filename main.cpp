@@ -86,10 +86,10 @@ int main()
 	sf::Font lifeFont;
 	lifeFont.loadFromFile("resource/Ancient.ttf");
 	sf::Text lifeText;
-	lifeText.setCharacterSize(20);
-	lifeText.setPosition({ 500 ,130*4 });
+	lifeText.setCharacterSize(50);
+	lifeText.setPosition({ 140 ,240 });
 	lifeText.setFont(lifeFont);
-	lifeText.setString("Score");
+	lifeText.setString("LIFE");
 	lifeText.setFillColor(sf::Color::Red);
 		
 	
@@ -456,40 +456,48 @@ int main()
 			if (player->GetPosition().y < 125 * 4) {
 				if (player->GetPosition().y > 84*4) {
 					view.setCenter(player->GetPosition());
+					lifeText.setPosition(player->GetPosition().x-395,player->GetPosition().y-300);
 				}
 				else
 				{
 					view.setCenter(player->GetPosition().x,84*4);
+					lifeText.setPosition(player->GetPosition().x - 395, 84 * 4-300);
 				}
 			}
 			else if (player->GetPosition().y >= 125 * 4) {
 				view.setCenter(player->GetPosition().x, 125 * 4);
+				lifeText.setPosition(player->GetPosition().x - 395, 125 * 4 - 300);
 			}
 		}
 		else {
 			if (player->GetPosition().y < 125 * 4) {
 				if (player->GetPosition().y > 84 * 4) {
 					view.setCenter(499,player->GetPosition().y);
+					lifeText.setPosition(104, player->GetPosition().y - 300);
 				}
 				else
 				{
 					view.setCenter(499, 84 * 4);
+					lifeText.setPosition(104, 84 * 4 - 300);
 				}
 			}
 			else if (player->GetPosition().y >= 125 * 4) {
 				view.setCenter(499, 125 * 4);
+				lifeText.setPosition(104, 125 * 4 - 300);
+
 			}
 
 		}
 
 		
 		
-		std::cout << player->GetPosition().x/4 << " " << player->GetPosition().y/4 << std::endl;
+		std::cout << player->GetPosition().x/4 << " " << player->GetPosition().y/4 << std::endl;		
 		
 		window.clear();		
+		window.setView(view);
 		window.draw(background);
-		window.setView(view);			
-
+		window.draw(lifeText);
+				
 		
 		//for (Platform& platform : platforms)
 		//	platform.Draw(window);
