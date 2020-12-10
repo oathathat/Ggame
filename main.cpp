@@ -22,6 +22,7 @@ int main()
 	int hit = 0;
 	int ulti = 0;
 	unsigned int randomPercent=33;
+	int animationFrame=0;
 
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame",sf::Style::Close);	
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(800.f, 600.0f));
@@ -36,9 +37,11 @@ int main()
 
 	sf::RectangleShape HPbar(sf::Vector2f(500,500));
 	sf::Texture HPbarTexture;
-	HPbarTexture.loadFromFile("resource/HPbar");
+	HPbarTexture.loadFromFile("resource/HP.png");
 	HPbar.setTexture(&HPbarTexture);
-
+	HPbar.setTextureRect((sf::IntRect(0, 0, HPbarTexture.getSize().x/4, HPbarTexture.getSize().y)));
+	HPbar.setSize(sf::Vector2f(175.f, 176.f));
+	HPbar.setScale(0.3,0.3);
 	
 
 	Player* player;
@@ -457,46 +460,67 @@ int main()
 				if (player->GetPosition().y > 84*4) {
 					view.setCenter(player->GetPosition());
 					lifeText.setPosition(player->GetPosition().x-395,player->GetPosition().y-300);
+					HPbar.setPosition(player->GetPosition().x + 300, player->GetPosition().y -275);
 				}
 				else
 				{
 					view.setCenter(player->GetPosition().x,84*4);
 					lifeText.setPosition(player->GetPosition().x - 395, 84 * 4-300);
+					HPbar.setPosition(player->GetPosition().x + 300, 84 * 4 - 275);
 				}
 			}
 			else if (player->GetPosition().y >= 125 * 4) {
 				view.setCenter(player->GetPosition().x, 125 * 4);
 				lifeText.setPosition(player->GetPosition().x - 395, 125 * 4 - 300);
+				HPbar.setPosition(player->GetPosition().x + 300, 125 * 4 - 275);
 			}
 		}
 		else {
 			if (player->GetPosition().y < 125 * 4) {
 				if (player->GetPosition().y > 84 * 4) {
 					view.setCenter(499,player->GetPosition().y);
-					lifeText.setPosition(104, player->GetPosition().y - 300);
+					lifeText.setPosition	(104, player->GetPosition().y - 300);
+					HPbar.setPosition		(799, player->GetPosition().y - 275);
 				}
 				else
 				{
 					view.setCenter(499, 84 * 4);
 					lifeText.setPosition(104, 84 * 4 - 300);
+					HPbar.setPosition(799, 84*4 - 275);
 				}
 			}
 			else if (player->GetPosition().y >= 125 * 4) {
 				view.setCenter(499, 125 * 4);
 				lifeText.setPosition(104, 125 * 4 - 300);
+				HPbar.setPosition(799, 125 * 4 - 275);
+
 
 			}
 
 		}
-
+		if (player->getHP() >= 100) {
+			animationFrame = 0;
+		}
+		else if (player->getHP() >= 75) {
+			animationFrame = 1;
+		}
+		else if (player->getHP() >= 50) {
+			animationFrame = 2;
+		}
+		else if (player->getHP() <= 25) {
+			animationFrame = 3;
+		}
+		HPbar.setTextureRect((sf::IntRect(animationFrame*HPbarTexture.getSize().x / 4, 0, HPbarTexture.getSize().x / 4, HPbarTexture.getSize().y)));
+		HPbar.setSize(sf::Vector2f(175.f, 176.f));
+		HPbar.setScale(0.3, 0.3);
 		
 		
-		std::cout << player->GetPosition().x/4 << " " << player->GetPosition().y/4 << std::endl;		
-		
+		std::cout << player->GetPosition().x/4 << " " << player->GetPosition().y/4 << std::endl;				
 		window.clear();		
 		window.setView(view);
 		window.draw(background);
 		window.draw(lifeText);
+		window.draw(HPbar);
 				
 		
 		//for (Platform& platform : platforms)
