@@ -84,7 +84,7 @@ int main()
 
 	//TEXT
 	sf::Font lifeFont;
-	lifeFont.loadFromFile("resource/AncientModernTales-a7Po.ttf");
+	lifeFont.loadFromFile("resource/Ancient.ttf");
 	sf::Text lifeText;
 	lifeText.setCharacterSize(20);
 	lifeText.setPosition({ 500 ,130*4 });
@@ -451,7 +451,8 @@ int main()
 			bosscounter++;
 		}
 
-		if (player->GetPosition().x < 3569*4-500&& player->GetPosition().x > 300) {
+		if (player->GetPosition().x < 3569*4-500&& player->GetPosition().x > 500) 
+		{
 			if (player->GetPosition().y < 125 * 4) {
 				if (player->GetPosition().y > 84*4) {
 					view.setCenter(player->GetPosition());
@@ -465,6 +466,23 @@ int main()
 				view.setCenter(player->GetPosition().x, 125 * 4);
 			}
 		}
+		else {
+			if (player->GetPosition().y < 125 * 4) {
+				if (player->GetPosition().y > 84 * 4) {
+					view.setCenter(499,player->GetPosition().y);
+				}
+				else
+				{
+					view.setCenter(499, 84 * 4);
+				}
+			}
+			else if (player->GetPosition().y >= 125 * 4) {
+				view.setCenter(499, 125 * 4);
+			}
+
+		}
+
+		
 		
 		std::cout << player->GetPosition().x/4 << " " << player->GetPosition().y/4 << std::endl;
 		
