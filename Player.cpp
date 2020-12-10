@@ -191,4 +191,9 @@ float Player::getspawnY()
     return this->spawnY;
 }
 
+void Player::spawn()
+{
+    body.setPosition(this->spawnX, this->spawnY);
+}
+
 

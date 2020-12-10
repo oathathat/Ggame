@@ -78,11 +78,19 @@ int main()
 
 	sf::Texture manaTexture;
 	manaTexture.loadFromFile("resource/mana.png");
-
+		
 	sf::Texture heartTexture;
-	heartTexture.loadFromFile("resource/heart1.png");
+	heartTexture.loadFromFile("resource/heart1.png");	
 
-
+	//TEXT
+	sf::Font lifeFont;
+	lifeFont.loadFromFile("resource/AncientModernTales-a7Po.ttf");
+	sf::Text lifeText;
+	lifeText.setCharacterSize(20);
+	lifeText.setPosition({ 500 ,130*4 });
+	lifeText.setFont(lifeFont);
+	lifeText.setString("Score");
+	lifeText.setFillColor(sf::Color::Red);
 		
 	
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 130.846f, 4 * 129.25f-6)));
@@ -154,8 +162,8 @@ int main()
 	
 	//bug
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 14.0f), sf::Vector2f(4 * 1648.0f, 4 * 193.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 28.0f, 4 * 15.0f), sf::Vector2f(4 * 1592.0f, 4 * 81.5f)));	
-	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 15.0f), sf::Vector2f(4 * 1648.0f, 4 * 81.5f)));
+	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 24.0f, 4 * 15.0f), sf::Vector2f(4 * 1592.0f, 4 * 81.5f)));	
+	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 40.0f, 4 * 15.0f), sf::Vector2f(4 * 1648.0f, 4 * 81.5f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 160.0f, 4 * 15.0f), sf::Vector2f(4 * 1768.0f, 4 * 81.5f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 96.0f, 4 * 48.0f), sf::Vector2f(4 * 1800.0f, 4 * 113.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 15.0f), sf::Vector2f(4 * 1904.0f, 4 * 81.5f)));
@@ -220,7 +228,7 @@ int main()
 		for (Platform& fire : fire)
 			if (fire.GetCollider().CheckCollision(playerCollision, direction, 1.0f))
 			{
-				player->SetPosition(501.f, 250.f);
+				player->spawn();
 				player->DecreaseLife(1);
 				player->setHP(100);
 			}
@@ -235,8 +243,7 @@ int main()
 		if (bulletTime > 400) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {				
 				if (player->getDirection() == true) {
-					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f,1.0f,1.0f,1));
-					
+					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f,1.0f,1.0f,1));					
 				}
 				if (player->getDirection() == false) {
 					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x-25, player->GetPosition().y, -1.0f, 0.0f,1.0f,1.0f,1));					
@@ -345,6 +352,7 @@ int main()
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()) && hiTtime >= 2)
 			{
 				player->DecreaseLife(1);
+				player->spawn();
 				player->setHP(100);
 				hit = 1;
 				hittime.restart();
@@ -368,7 +376,7 @@ int main()
 		{
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 			{
-				player->DecreaseHP(-10);
+				player->DecreaseHP(-25);
 				delete potion.at(counterD);
 				potion.erase(potion.begin() + counterD);
 				counterD--;
@@ -424,9 +432,11 @@ int main()
 			}
 			counter++;
 		}
+
 		if (randomPercent == 0) {
 			randomPercent = 1;
 		}
+
 		int bosscounter = 0;
 		for (auto* i :boss1)
 		{
@@ -440,14 +450,15 @@ int main()
 			}
 			bosscounter++;
 		}
+
 		if (player->GetPosition().x < 3569*4-500&& player->GetPosition().x > 300) {
 			if (player->GetPosition().y < 125 * 4) {
-				if (player->GetPosition().y > 82*4) {
+				if (player->GetPosition().y > 84*4) {
 					view.setCenter(player->GetPosition());
 				}
 				else
 				{
-					view.setCenter(player->GetPosition().x,82*4);
+					view.setCenter(player->GetPosition().x,84*4);
 				}
 			}
 			else if (player->GetPosition().y >= 125 * 4) {
@@ -465,7 +476,7 @@ int main()
 		//for (Platform& platform : platforms)
 		//	platform.Draw(window);
 		if (player->getHP() <= 0) {
-			player->SetPosition(player->getspawnX(), player->getspawnY());
+			player->spawn();
 			player->setHP(100);
 			player->DecreaseLife(1);
 		}

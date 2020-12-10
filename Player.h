@@ -25,6 +25,7 @@ public:
     void setspawnY(float y);
     float getspawnX();
     float getspawnY();
+    void spawn();
 
 
     
