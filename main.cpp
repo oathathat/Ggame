@@ -12,6 +12,8 @@
 #include <sstream>
 #include"Boss.h"
 #include "Item.h"
+#include"Menu.h"
+int section_number;
 
 
 int main()
@@ -19,7 +21,7 @@ int main()
 	//variable
 	int score = 0;
 	int hit = 0;
-	int ulti = 0;
+	int ulti = 10;
 	unsigned int randomPercent=33;
 	int animationFrame=0;
 
@@ -45,7 +47,7 @@ int main()
 
 	Player* player;
 	player = new Player(&playerTexture, sf::Vector2u(3, 4), 0.2f, 300.0f,240.0f);
-	player->SetPosition(player->getspawnX(), player->getspawnY());
+	player->SetPosition(3000.f*4, player->getspawnY());
 
 	std::vector<Platform> platforms;
 	std::vector<Platform> fire;
@@ -70,7 +72,7 @@ int main()
 	monsterTexture.loadFromFile("resource/monster1.png");
 
 	sf::Texture BossTexture;
-	BossTexture.loadFromFile("resource/monster1.png");
+	BossTexture.loadFromFile("resource/ghost.png");
 
 	sf::Texture coinTexture;
 	coinTexture.loadFromFile("resource/coin1.png");
@@ -108,11 +110,46 @@ int main()
 	lifeNum.setPosition({ 140 ,240 });
 	lifeNum.setFont(lifeFont);
 	lifeNum.setString(std::to_string(player->getLife()));
-	lifeNum.setFillColor(sf::Color::Cyan);
+	lifeNum.setFillColor(sf::Color::Cyan);		
+
+	//sound
+	sf::SoundBuffer shotBuff, coinBuff, enemydieBuff, jumpBuff,hitBuff,lifeBuff,gameoverBuff,ultiBuff,powerupBuff;
+	shotBuff.loadFromFile("resource/fireball.wav");
+	coinBuff.loadFromFile("resource/coin.wav");
+	enemydieBuff.loadFromFile("resource/death.wav");
+	jumpBuff.loadFromFile("resource/jump.wav");
+	hitBuff.loadFromFile("resource/hit.wav");
+	lifeBuff.loadFromFile("resource/life.wav");
+	gameoverBuff.loadFromFile("resource/Gameover.wav");
+	ultiBuff.loadFromFile("resource/FireballWhoosh.wav");
+	powerupBuff.loadFromFile("resource/");
+
+	sf::Sound shotSound, coinSound, enemydieSound,jumpSound,hitSound,lifeSound,gameoverSound,ultiSound,powerupSound;
+	shotSound.setBuffer(shotBuff);
+	coinSound.setBuffer(coinBuff);
+	enemydieSound.setBuffer(enemydieBuff);
+	jumpSound.setBuffer(jumpBuff);
+	hitSound.setBuffer(hitBuff);
+	lifeSound.setBuffer(lifeBuff);
+	gameoverSound.setBuffer(gameoverBuff);
+	ultiSound.setBuffer(ultiBuff);
+	powerupSound.setBuffer(powerupBuff);
 
 
-		
+	shotSound.setVolume(30.0);
+	coinSound.setVolume(30.0);
+	enemydieSound.setVolume(30.0);
+	jumpSound.setVolume(30.0);
+	hitSound.setVolume(30.0);
+	lifeSound.setVolume(30.0);
+	gameoverSound.setVolume(30.0);
+	ultiSound.setVolume(50.0);
 	
+	sf::Music song;
+	song.openFromFile("resource/song.wav");
+	song.setVolume(20.0);
+	song.play();
+
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 130.846f, 4 * 129.25f-6)));
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 508.797f, 4 * 129.25f - 6)));
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 240.761f, 4 * 129.25f - 6)));
@@ -147,7 +184,7 @@ int main()
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2288.0f, 4 * 66.0f - 6)));
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2430.0f, 4 * 66.0f - 6)));
 		
-	boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(6, 2), 0.3f, 165.0f, sf::Vector2f(4* 3200.0f, 4 * 118.0f)));
+	boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(4, 2), 0.3f, 165.0f, sf::Vector2f(4* 3200.0f, 4 * 118.0f)));
 	coin.push_back(new Item	(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 130.0f, 4 * 100.0f)));
     coin.push_back(new Item (&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 1647.0f, 4 * 178.0f)));
 
@@ -156,6 +193,7 @@ int main()
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 14.0f), sf::Vector2f(4 * 1681.0f, 4 * 196.0f)));
 
 	//Floor
+	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 9.0f, 4 * 36.0f), sf::Vector2f(15 * 4.0f, 4 * 74.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4  *48.0f ,  4*16.0f),sf::Vector2f(4 *	33.0f, 4 *98.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4  * 9.0f,  4 * 16.0f), sf::Vector2f(4 * 51.5f,  4 * 98.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4  * 17.0f,  4 * 16.0f), sf::Vector2f(4 * 63.5f , 4 * 114.0f)));
@@ -206,6 +244,7 @@ int main()
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 64.0f), sf::Vector2f(4 * 3296.0f, 4 * 154.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 249.0f, 4 * 4.0f), sf::Vector2f(4 * 3444.5f, 4 * 188.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 1592.0f, 4 * 4.0f), sf::Vector2f(4 * 2500.0f, 4 * 188.0f)));
+	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 161.0f), sf::Vector2f(4 * 3561.0f, 4 * 105.5f)));
 
 	//ceiling
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 256.0f, 4 * 47.0f), sf::Vector2f(4 * 136.0f, 4 * 33.5f)));
@@ -267,7 +306,8 @@ int main()
 		
 		bulletTime = bullTime.getElapsedTime().asMilliseconds();
 		if (bulletTime > 400) {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {				
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {	
+				shotSound.play();
 				if (player->getDirection() == true) {
 					playerBullet.push_back(new Bullet(&bulletTexture, 20, player->GetPosition().x+25, player->GetPosition().y, 1.0f, 0.0f,1.0f,1.0f,1));					
 				}
@@ -277,15 +317,22 @@ int main()
 				bullTime.restart();
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && ulti > 0) {
+				ultiSound.play();
 				if (player->getDirection() == true) {
-					special.push_back(new Bullet(&specialTexture, 5, player->GetPosition().x + 40, player->GetPosition().y, 1.0f, 0.0f, 2.0f, 2.0f,2));
+					special.push_back(new Bullet(&specialTexture,10, player->GetPosition().x + 40, player->GetPosition().y, 1.0f, 0.0f, 2.0f, 2.0f,2));
 
 				}
 				if (player->getDirection() == false) {
-					special.push_back(new Bullet(&specialTexture, 5, player->GetPosition().x - 40, player->GetPosition().y, -1.0f, 0.0f, 2.0f, 2.0f,2));
+					special.push_back(new Bullet(&specialTexture, 10, player->GetPosition().x - 40, player->GetPosition().y, -1.0f, 0.0f, 2.0f, 2.0f,2));
 				}
 				ulti = ulti - 1;
 				bullTime.restart();
+			}
+			for (auto* bullet : playerBullet) {
+				bullet->bulletDirection(player->getDirection());
+		     }
+			for (auto* bullet : special) {
+				bullet->bulletDirection(player->getDirection());
 			}
 		}
 		
@@ -353,6 +400,15 @@ int main()
 				}			
 				counter++;
 			}
+
+			for (auto* Bullet : special)
+			{
+				if (i->GetGlobalBounds().intersects(Bullet->GetGlobalBounds()))
+				{
+					i->DecreaseHP(100);					
+				}				
+			}
+
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()) && hiTtime>=2)
 			{
 				player->DecreaseHP(25);
@@ -505,7 +561,7 @@ int main()
 			}
 		}
 
-		else {
+		else if(player->GetPosition().x < 500){
 			if (player->GetPosition().y < 125 * 4) {
 				if (player->GetPosition().y > 84 * 4) {
 					view.setCenter				(499, player->GetPosition().y);
@@ -578,12 +634,7 @@ int main()
 		{
 			bullet->Draw(window);
 		}
-		for (auto* bullet : playerBullet) {
-			bullet->bulletDirection(player->getDirection());
-		}
-		for (auto* bullet : special) {
-			bullet->bulletDirection(player->getDirection());
-		}
+		
 		for (auto* Boss1 : boss1) 
 		{
 			Boss1->Draw(window);
