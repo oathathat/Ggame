@@ -18,11 +18,62 @@ int section_number=0;
 int main()
 {
 	//variable
-	int score = 0;	
+	float score = 0;	
+	sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+	Menu menu(window.getSize().x, window.getSize().y);
+	sf::Texture Mtexture;
+	Mtexture.loadFromFile("resource/menuBG.jpg");
+
+	sf::Sprite Mbackground;
+	Mbackground.setTexture(Mtexture);
+	Mbackground.setPosition(0, 15);
+
+	while (window.isOpen())
+	{
+
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::KeyReleased:
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Up:
+					menu.MoveUp();
+					break;
+				case sf::Keyboard::Down:
+					menu.MoveDown();
+					break;
+				case sf::Keyboard::Return:
+					switch (menu.GetPressedItem())
+					{
+					case 0:
+						section_number = 1;
+						std::cout << "Play button has been pressed" << std::endl;
+						window.close();
+						break;
+					case 1:
+						section_number = 2;
+						window.close();
+						break;
+					case 2:
+						section_number = 3;
+						return 0;
+						window.close();
+						break;
+					}
+				}
+			}
+		}
+		window.clear();
+		window.draw(Mbackground);
+		menu.draw(window);
+		window.display();
+	}
 	while(true)
-	{				
-		if (section_number == 0){
-			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
+	{	if (section_number == 0){
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
 			Menu menu(window.getSize().x, window.getSize().y);
 			sf::Texture Mtexture;
 			Mtexture.loadFromFile("resource/menuBG.jpg");
@@ -62,6 +113,7 @@ int main()
 								break;
 							case 2:
 								section_number = 3;
+								return 0;
 								window.close();
 								break;
 							}
@@ -74,20 +126,19 @@ int main()
 				menu.draw(window);
 				window.display();
 			}
-		}
+		}	
 		if (section_number == 1) {
 
 			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
 
 			sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(800.f, 600.0f));
 			int hit = 0;
-			int ulti = 10;
+			int ulti = 0;
 			unsigned int randomPercent = 33;
 			int animationFrame = 0;
 
 			sf::Texture playerTexture;
 			playerTexture.loadFromFile("resource/WizardOat.png");
-
 			sf::RectangleShape background(sf::Vector2f(3569 * 4, 200 * 4));
 			sf::Texture backgroundtexture;
 			backgroundtexture.loadFromFile("resource/MyMap2.png");
@@ -101,10 +152,9 @@ int main()
 			HPbar.setSize(sf::Vector2f(175.f, 176.f));
 			HPbar.setScale(0.3, 0.3);
 
-
 			Player* player;
 			player = new Player(&playerTexture, sf::Vector2u(3, 4), 0.2f, 300.0f, 240.0f);
-			player->SetPosition(3000.f * 4, player->getspawnY());
+			player->SetPosition(player->getspawnX(), player->getspawnY());
 
 			std::vector<Platform> platforms;
 			std::vector<Platform> fire;
@@ -331,7 +381,7 @@ int main()
 			sf::Clock bullTime;
 			sf::Clock hittime;
 
-			window.setFramerateLimit(60);			
+			window.setFramerateLimit(60);
 			while (window.isOpen())
 			{
 				timeCount = Timer.getElapsedTime().asSeconds();
@@ -349,8 +399,10 @@ int main()
 				sf::Event event;
 				while (window.pollEvent(event))
 				{
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed)
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed) {
 						window.close();
+						return 0;
+					}
 				}
 
 				//render				
@@ -579,6 +631,7 @@ int main()
 				{
 					if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 					{
+						score = player->getLife()*20 - timeCount/10+ score;
 						powerupSound.play();
 						delete key.at(counterG);
 						key.erase(key.begin() + counterG);
@@ -586,7 +639,7 @@ int main()
 
 						section_number = 0;
 						window.close();
-						break;				
+						break;
 					}
 					counterG++;
 				}
@@ -772,8 +825,9 @@ int main()
 				window.display();
 
 			}
-			return 0;
+			
 		}
-		
+			
 	}
+	return 0;
 }
