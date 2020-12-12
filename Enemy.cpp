@@ -108,8 +108,7 @@ void Enemy::onCollision(sf::Vector2f direction)
     }
     if (direction.y < 0.0f)
     {
-        velocity.y = 0.0f;
-        canJump = true;
+        velocity.y = 0.0f;       
     }
     else if (direction.y > 0.0f)
     {

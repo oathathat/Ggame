@@ -13,66 +13,27 @@
 #include"Boss.h"
 #include "Item.h"
 #include"Menu.h"
+#include"retryMenu.h"
 int section_number=0;
 
 int main()
 {
-	//variable
-	float score = 0;	
-	sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
-	Menu menu(window.getSize().x, window.getSize().y);
-	sf::Texture Mtexture;
-	Mtexture.loadFromFile("resource/menuBG.jpg");
-
-	sf::Sprite Mbackground;
-	Mbackground.setTexture(Mtexture);
-	Mbackground.setPosition(0, 15);
-
-	while (window.isOpen())
+	//variable	
+	int totalscore = 0;
+	
+	while (true)
 	{
-
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			switch (event.type)
+		if (section_number == 0) {
+			sf::SoundBuffer  select;
+			sf::Sound  selectSound;
+			select.loadFromFile("resource/menuselect.wav");
+			selectSound.setBuffer(select);
+			selectSound.setVolume(40.0);
+			if (totalscore != 0) 
 			{
-			case sf::Event::KeyReleased:
-				switch (event.key.code)
-				{
-				case sf::Keyboard::Up:
-					menu.MoveUp();
-					break;
-				case sf::Keyboard::Down:
-					menu.MoveDown();
-					break;
-				case sf::Keyboard::Return:
-					switch (menu.GetPressedItem())
-					{
-					case 0:
-						section_number = 1;
-						std::cout << "Play button has been pressed" << std::endl;
-						window.close();
-						break;
-					case 1:
-						section_number = 2;
-						window.close();
-						break;
-					case 2:
-						section_number = 3;
-						return 0;
-						window.close();
-						break;
-					}
-				}
+				selectSound.play();
 			}
-		}
-		window.clear();
-		window.draw(Mbackground);
-		menu.draw(window);
-		window.display();
-	}
-	while(true)
-	{	if (section_number == 0){
+
 			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
 			Menu menu(window.getSize().x, window.getSize().y);
 			sf::Texture Mtexture;
@@ -111,11 +72,9 @@ int main()
 								section_number = 2;
 								window.close();
 								break;
-							case 2:
-								section_number = 3;
-								return 0;
-								window.close();
-								break;
+							case 2:							
+								return 0;							
+								
 							}
 						}
 					}
@@ -126,14 +85,22 @@ int main()
 				menu.draw(window);
 				window.display();
 			}
-		}	
+		}
 		if (section_number == 1) {
+
+			sf::SoundBuffer  select;
+			sf::Sound  selectSound;
+			select.loadFromFile("resource/menuselect.wav");
+			selectSound.setBuffer(select);
+			selectSound.setVolume(40.0);			
+			selectSound.play();			
 
 			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
 
 			sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(800.f, 600.0f));
 			int hit = 0;
 			int ulti = 0;
+			int score = 0;
 			unsigned int randomPercent = 33;
 			int animationFrame = 0;
 
@@ -205,7 +172,7 @@ int main()
 			lifeText.setPosition({ 140 ,240 });
 			lifeText.setFont(lifeFont);
 			lifeText.setString("LIFE");
-			lifeText.setFillColor(sf::Color::Red);
+			lifeText.setFillColor(sf::Color::Color(255, 127, 80));
 
 			sf::Clock Timer;
 			int timeCount = 0;
@@ -214,41 +181,95 @@ int main()
 			gameTime.setPosition({ 140 ,240 });
 			gameTime.setFont(lifeFont);
 			gameTime.setString(std::to_string(timeCount));
-			gameTime.setFillColor(sf::Color::Red);
+			gameTime.setFillColor(sf::Color::Color(250, 250, 210));
 
 			sf::Text lifeNum;
 			lifeNum.setCharacterSize(50);
 			lifeNum.setPosition({ 140 ,240 });
 			lifeNum.setFont(lifeFont);
 			lifeNum.setString(std::to_string(player->getLife()));
-			lifeNum.setFillColor(sf::Color::Cyan);
+			lifeNum.setFillColor(sf::Color::Color(255, 127, 80));
+
+			sf::Text scorenum;
+			scorenum.setCharacterSize(40);
+			scorenum.setPosition({ 140 ,240 });
+			scorenum.setFont(lifeFont);
+			scorenum.setString(std::to_string(score));
+			scorenum.setFillColor(sf::Color::Color(255, 160, 122));
+
+			sf::Text scoretext;
+			scoretext.setCharacterSize(40);
+			scoretext.setPosition({ 140 ,240 });
+			scoretext.setFont(lifeFont);
+			scoretext.setString("Score");
+			scoretext.setFillColor(sf::Color::Color(255, 160, 122));
 
 			//sound
-			sf::SoundBuffer shotBuff, coinBuff, enemydieBuff, hitBuff, lifeBuff, gameoverBuff, ultiBuff, powerupBuff, HPBuff, delifeBuff, hitplayerBuff;
+			sf::SoundBuffer shotBuff;
 			shotBuff.loadFromFile("resource/fireball.wav");
+
+			sf::SoundBuffer coinBuff;
 			coinBuff.loadFromFile("resource/coin.wav");
+
+			sf::SoundBuffer enemydieBuff;
 			enemydieBuff.loadFromFile("resource/death.wav");
+
+			sf::SoundBuffer hitBuff;
 			hitBuff.loadFromFile("resource/hit.wav");
+
+			sf::SoundBuffer lifeBuff;
 			lifeBuff.loadFromFile("resource/life.wav");
+
+			sf::SoundBuffer gameoverBuff;
 			gameoverBuff.loadFromFile("resource/Gameover.wav");
+
+			sf::SoundBuffer ultiBuff;
 			ultiBuff.loadFromFile("resource/FireballWhoosh.wav");
+
+			sf::SoundBuffer powerupBuff;
 			powerupBuff.loadFromFile("resource/mana.wav");
+
+			sf::SoundBuffer HPBuff;
 			HPBuff.loadFromFile("resource/HP.wav");
+
+			sf::SoundBuffer delifeBuff;
 			delifeBuff.loadFromFile("resource/Delife.wav");
+
+			sf::SoundBuffer hitplayerBuff;
 			hitplayerBuff.loadFromFile("resource/hitplayer.wav");
 
 
-			sf::Sound shotSound, coinSound, enemydieSound, hitSound, lifeSound, gameoverSound, ultiSound, powerupSound, HPsound, delifeSound, hitplayerSound;
+			sf::Sound shotSound;
 			shotSound.setBuffer(shotBuff);
+
+			sf::Sound coinSound;
 			coinSound.setBuffer(coinBuff);
+
+			sf::Sound enemydieSound;
 			enemydieSound.setBuffer(enemydieBuff);
+
+			sf::Sound hitSound;
 			hitSound.setBuffer(hitBuff);
+
+			sf::Sound lifeSound;
 			lifeSound.setBuffer(lifeBuff);
+
+			sf::Sound gameoverSound;
 			gameoverSound.setBuffer(gameoverBuff);
+
+			sf::Sound ultiSound;
 			ultiSound.setBuffer(ultiBuff);
+
+			sf::Sound powerupSound;
 			powerupSound.setBuffer(powerupBuff);
+
+			sf::Sound HPsound;
 			HPsound.setBuffer(HPBuff);
+
+			sf::Sound delifeSound;
 			delifeSound.setBuffer(delifeBuff);
+
+			sf::Sound hitplayerSound;
 			hitplayerSound.setBuffer(hitplayerBuff);
 
 
@@ -305,8 +326,10 @@ int main()
 			monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2430.0f, 4 * 66.0f - 6)));
 
 			boss1.push_back(new Boss(&BossTexture, sf::Vector2u(4, 2), 0.3f, 165.0f, sf::Vector2f(4 * 3200.0f, 4 * 118.0f - 50)));
-			coin.push_back(new Item(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 130.0f, 4 * 100.0f)));
+			coin.push_back(new Item(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 50.0f, 4 * 75.0f)));
 			coin.push_back(new Item(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 1647.0f, 4 * 178.0f)));
+			coin.push_back(new Item(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 2575.0f, 4 * 178.0f)));
+			coin.push_back(new Item(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 2887.0f, 4 * 178.0f)));
 			key.push_back(new Item(&keyTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(4 * 3500.0f, 4 * 180.0f)));
 
 			fire.push_back(Platform(nullptr, sf::Vector2f(4 * 174.0f, 4 * 14.0f), sf::Vector2f(4 * 353.0f, 4 * 193.0f)));
@@ -385,9 +408,10 @@ int main()
 			while (window.isOpen())
 			{
 				timeCount = Timer.getElapsedTime().asSeconds();
+
 				gameTime.setString(std::to_string(timeCount));
 				lifeNum.setString(std::to_string(player->getLife()));
-
+				scorenum.setString(std::to_string(score));
 
 				deltaTime = clock.restart().asSeconds();
 				if (deltaTime > 1.f / 40.f)
@@ -412,7 +436,7 @@ int main()
 				Collider playerCollision = player->GetCollider();
 				sf::Vector2f direction;
 
-				for (Platform& fire : fire)
+				for (Platform& fire : fire) {
 					if (fire.GetCollider().CheckCollision(playerCollision, direction, 1.0f))
 					{
 						delifeSound.play();
@@ -420,12 +444,23 @@ int main()
 						player->DecreaseLife(1);
 						player->setHP(100);
 					}
+				}
 
-				for (Platform& platform : platforms)
+				for (Platform& platform : platforms) {
 					if (platform.GetCollider().CheckCollision(playerCollision, direction, 1.0f))
 					{
 						player->onCollision(direction);
 					}
+					for (auto* i : monster) {
+						Collider enemyCollision = i->GetCollider();
+						if (platform.GetCollider().CheckCollision(enemyCollision, direction, 1.0f))
+						{
+							i->onCollision(direction);
+						}
+
+					}
+				}
+
 
 				bulletTime = bullTime.getElapsedTime().asMilliseconds();
 				if (bulletTime > 400) {
@@ -631,13 +666,13 @@ int main()
 				{
 					if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 					{
-						score = player->getLife()*20 - timeCount/10+ score;
+						totalscore = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
 						powerupSound.play();
 						delete key.at(counterG);
 						key.erase(key.begin() + counterG);
 						counterG--;
 
-						section_number = 0;
+						section_number = 4;
 						window.close();
 						break;
 					}
@@ -650,6 +685,7 @@ int main()
 
 					if (i->getHP() <= 0)
 					{
+						score++;
 						if (manaRandom == 0) {
 							mana.push_back(new Item(&manaTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y + 15)));
 						}
@@ -696,6 +732,8 @@ int main()
 							lifeNum.setPosition(player->GetPosition().x - 250, player->GetPosition().y - 300);
 							HPbar.setPosition(player->GetPosition().x + 300, player->GetPosition().y - 275);
 							gameTime.setPosition(player->GetPosition().x, player->GetPosition().y - 300);
+							scoretext.setPosition(player->GetPosition().x - 395, player->GetPosition().y - 240);
+							scorenum.setPosition(player->GetPosition().x - 250, player->GetPosition().y - 240);
 						}
 						else
 						{
@@ -704,6 +742,8 @@ int main()
 							lifeNum.setPosition(player->GetPosition().x - 250, 84 * 4 - 300);
 							HPbar.setPosition(player->GetPosition().x + 300, 84 * 4 - 275);
 							gameTime.setPosition(player->GetPosition().x, 84 * 4 - 300);
+							scoretext.setPosition(player->GetPosition().x - 395, 84 * 4 - 240);
+							scorenum.setPosition(player->GetPosition().x - 250, 84 * 4 - 240);
 						}
 					}
 					else if (player->GetPosition().y >= 125 * 4) {
@@ -712,6 +752,9 @@ int main()
 						lifeNum.setPosition(player->GetPosition().x - 250, 125 * 4 - 300);
 						HPbar.setPosition(player->GetPosition().x + 300, 125 * 4 - 275);
 						gameTime.setPosition(player->GetPosition().x, 125 * 4 - 300);
+						scoretext.setPosition(player->GetPosition().x - 395, 125 * 4 - 240);
+						scorenum.setPosition(player->GetPosition().x - 250, 125 * 4 - 240);
+
 					}
 				}
 
@@ -723,6 +766,8 @@ int main()
 							lifeNum.setPosition(499 - 250, player->GetPosition().y - 300);
 							HPbar.setPosition(799, player->GetPosition().y - 275);
 							gameTime.setPosition(499, player->GetPosition().y - 300);
+							scoretext.setPosition(499 - 395, player->GetPosition().y - 240);
+							scorenum.setPosition(499 - 250, player->GetPosition().y - 240);
 						}
 						else
 						{
@@ -731,6 +776,8 @@ int main()
 							lifeNum.setPosition(499 - 250, 84 * 4 - 300);
 							HPbar.setPosition(799, 84 * 4 - 275);
 							gameTime.setPosition(499, 84 * 4 - 300);
+							scoretext.setPosition(499 - 395, 84 * 4 - 240);
+							scorenum.setPosition(499 - 250, 84 * 4 - 240);
 						}
 					}
 					else if (player->GetPosition().y >= 125 * 4) {
@@ -739,6 +786,8 @@ int main()
 						lifeNum.setPosition(499 - 250, 125 * 4 - 300);
 						HPbar.setPosition(799, 125 * 4 - 275);
 						gameTime.setPosition(499, 125 * 4 - 300);
+						scoretext.setPosition(499 - 395, 125 * 4 - 240);
+						scorenum.setPosition(499 - 250, 125 * 4 - 240);
 
 					}
 				}
@@ -756,6 +805,7 @@ int main()
 				else if (player->getHP() <= 25) {
 					animationFrame = 3;
 				}
+
 				HPbar.setTextureRect((sf::IntRect(animationFrame * HPbarTexture.getSize().x / 4, 0, HPbarTexture.getSize().x / 4, HPbarTexture.getSize().y)));
 				HPbar.setSize(sf::Vector2f(175.f, 176.f));
 				HPbar.setScale(0.3, 0.3);
@@ -769,16 +819,26 @@ int main()
 				window.draw(lifeNum);
 				window.draw(gameTime);
 				window.draw(HPbar);
+				window.draw(scorenum);
+				window.draw(scoretext);
 
 
 				//for (Platform& platform : platforms)
 				//	platform.Draw(window);
+
 				if (player->getHP() <= 0) {
 					delifeSound.play();
 					player->spawn();
 					player->setHP(100);
 					player->DecreaseLife(1);
 				}
+
+				if (player->getLife() < 0) {
+					totalscore = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+					section_number = 3;
+					window.close();					
+				}
+
 				if (player->GetPosition().x >= 1710.f * 4 && player->GetPosition().x <= 1780.f * 4 && player->GetPosition().y <= 75.f * 4) {
 					player->setspawnX(1730.f * 4);
 					player->setspawnY(60.0f * 4);
@@ -825,9 +885,61 @@ int main()
 				window.display();
 
 			}
-			
+
 		}
-			
+		if (section_number == 3)
+		{
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			retryMenu retrymenu(window.getSize().x, window.getSize().y);
+			sf::Texture Rtexture;
+			Rtexture.loadFromFile("resource/retryBG.jpg");
+
+			sf::Sprite Rbackground;
+			Rbackground.setTexture(Rtexture);
+			Rbackground.setPosition(0, 15);
+
+			while (window.isOpen())
+			{
+				sf::Event event;
+				while (window.pollEvent(event))
+				{
+					switch (event.type)
+					{
+					case sf::Event::KeyReleased:
+						switch (event.key.code)
+						{
+						case sf::Keyboard::Up:
+							retrymenu.MoveUp();
+							break;
+						case sf::Keyboard::Down:
+							retrymenu.MoveDown();
+							break;
+						case sf::Keyboard::Return:
+							switch (retrymenu.GetPressedItem())
+							{
+							case 0:
+
+								section_number = 1;
+								window.close();
+								break;
+
+							case 1:
+								section_number = 0;
+								window.close();								
+								break;
+
+							}
+						}
+					}
+				}
+				window.clear();
+				window.draw(Rbackground);
+				retrymenu.draw(window);
+				window.display();
+			}
+		}		
 	}
+
+
 	return 0;
 }

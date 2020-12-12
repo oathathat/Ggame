@@ -30,8 +30,7 @@ Player::~Player()
 
 void Player::Update(float deltaTime,int hit)
 {
-    velocity.x *= 0.0f;
-        
+    velocity.x *= 0.0f;        
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         velocity.x -= speed;
@@ -75,10 +74,10 @@ void Player::Update(float deltaTime,int hit)
         else
             faceRight = false;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
+     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+     {
        row=2;
-    }
+     }
 
     if (hit == 1)
     {
@@ -96,7 +95,6 @@ void Player::Update(float deltaTime,int hit)
 
     animation.Update(row, deltaTime, faceRight);
     body.setTextureRect(animation.uvRect);
-
     body.move(velocity*deltaTime);
 }
 

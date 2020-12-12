@@ -63,7 +63,7 @@ void Boss::Update(float deltaTime, Player* player)
         }
     }
 
-    if (body.getPosition().x >= player->GetPosition().x+500)
+    if (body.getPosition().x >= player->GetPosition().x+500 && player->getLife()<-1)
     {
         bosscounterSound.play();
     }
