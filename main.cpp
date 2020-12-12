@@ -59,6 +59,7 @@ int main()
 	std::vector<Item*> potion;
 	std::vector<Item*> mana;
 	std::vector<Item*> heart;
+	std::vector<Item*> key;
 
 
 
@@ -85,6 +86,9 @@ int main()
 		
 	sf::Texture heartTexture;
 	heartTexture.loadFromFile("resource/heart1.png");	
+
+	sf::Texture keyTexture;
+	keyTexture.loadFromFile("resource/key.png");
 
 	//TEXT
 	sf::Font lifeFont;
@@ -113,7 +117,7 @@ int main()
 	lifeNum.setFillColor(sf::Color::Cyan);		
 
 	//sound
-	sf::SoundBuffer shotBuff, coinBuff, enemydieBuff,hitBuff,lifeBuff,gameoverBuff,ultiBuff,powerupBuff,HPBuff,delifeBuff;
+	sf::SoundBuffer shotBuff,coinBuff, enemydieBuff,hitBuff,lifeBuff,gameoverBuff,ultiBuff,powerupBuff,HPBuff,delifeBuff,hitplayerBuff;
 	shotBuff.loadFromFile("resource/fireball.wav");
 	coinBuff.loadFromFile("resource/coin.wav");
 	enemydieBuff.loadFromFile("resource/death.wav");	
@@ -124,9 +128,10 @@ int main()
 	powerupBuff.loadFromFile("resource/mana.wav");
 	HPBuff.loadFromFile("resource/HP.wav");
 	delifeBuff.loadFromFile("resource/Delife.wav");
+	hitplayerBuff.loadFromFile("resource/hitplayer.wav");
 	
 
-	sf::Sound shotSound, coinSound, enemydieSound,hitSound,lifeSound,gameoverSound,ultiSound,powerupSound,HPsound,delifeSound;
+	sf::Sound shotSound, coinSound, enemydieSound,hitSound,lifeSound,gameoverSound,ultiSound,powerupSound,HPsound,delifeSound,hitplayerSound;
 	shotSound.setBuffer(shotBuff);
 	coinSound.setBuffer(coinBuff);
 	enemydieSound.setBuffer(enemydieBuff);
@@ -137,7 +142,7 @@ int main()
 	powerupSound.setBuffer(powerupBuff);
 	HPsound.setBuffer(HPBuff);
 	delifeSound.setBuffer(delifeBuff);
-
+	hitplayerSound.setBuffer(hitplayerBuff);
 
 
 	shotSound.setVolume(30.0);
@@ -150,6 +155,7 @@ int main()
 	powerupSound.setVolume(30.0);
 	HPsound.setVolume(50.0);
 	delifeSound.setVolume(30.0);
+	hitplayerSound.setVolume(28.0);
 
 
 	sf::Music song;
@@ -194,6 +200,7 @@ int main()
 	boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(4, 2), 0.3f, 165.0f, sf::Vector2f(4* 3200.0f, 4 * 118.0f-50)));
 	coin.push_back(new Item	(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 130.0f, 4 * 100.0f)));
     coin.push_back(new Item (&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 1647.0f, 4 * 178.0f)));
+	key.push_back(new Item(&keyTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(4 * 3500.0f, 4 * 180.0f)));
 
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 174.0f, 4 * 14.0f), sf::Vector2f(4 * 353.0f, 4 * 193.0f)));
 	fire.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 14.0f), sf::Vector2f(4 * 1617.0f, 4 * 196.0f)));
@@ -387,6 +394,9 @@ int main()
 		for (auto* i : heart) {
 			i->Update(deltaTime);
 		}
+		for (auto* i : key) {
+			i->Update(deltaTime);
+		}
 		for (auto* i : special) {
 			i->Update();
 		}
@@ -421,6 +431,7 @@ int main()
 
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()) && hiTtime>=2)
 			{
+				hitplayerSound.play();
 				player->DecreaseHP(25);
 				hit = 1;
 				hittime.restart();
@@ -505,6 +516,19 @@ int main()
 				counterF--;
 			}
 			counterF++;
+		}
+
+		int counterG = 0;
+		for (auto* i : key)
+		{
+			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
+			{			
+				powerupSound.play();
+				delete key.at(counterG);
+				key.erase(key.begin() + counterG);
+				counterG--;
+			}
+			counterG++;
 		}
 
 		for (auto* i : monster)
@@ -679,6 +703,10 @@ int main()
 		for (auto* Heart : heart)
 		{
 			Heart->Draw(window);
+		}
+		for (auto* Key : key)
+		{
+			Key->Draw(window);
 		}
 		player->Draw(window);
 		window.display();

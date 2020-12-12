@@ -10,7 +10,7 @@ Enemy::Enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, fl
     row = 0;
     faceRight = true;
 
-    this->hp = 3;
+    this->hp = 2;
 
     body.setSize(sf::Vector2f(80, 80));
     body.setOrigin(body.getSize() / 2.0f);
@@ -19,13 +19,8 @@ Enemy::Enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, fl
     body.setPosition(position);
 
     this->spawnX = body.getPosition().x;
-   
-   
-    //Sound
-    /*soundJump.loadFromFile("JumpSOUND.wav");
-    sJump.setBuffer(soundJump);
-    sJump.setVolume(15.0);
-    */
+      
+    
 
 }
 
@@ -77,18 +72,7 @@ void Enemy::Update(float deltaTime, Player* player)
     else 
     {
         velocity.x = 0;      
-    }
-  
-
-
-   //   for (auto* bullet : bullets)
-   //   {
-   //    if (player->GetGlobalBounds().intersects(bullet->GetGlobalBounds()))
-   //    {
-   //       bullet->setPosition(-50.0f, -50.0f);
-   //    }
-   //   }
-
+    }          
 
     if (velocity.x != 0.0f)
     {
