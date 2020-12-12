@@ -14,13 +14,13 @@
 #include "Item.h"
 #include"Menu.h"
 #include"retryMenu.h"
-int section_number=0;
+int section_number = 0;
 
 int main()
 {
 	//variable	
 	int totalscore = 0;
-	
+
 	while (true)
 	{
 		if (section_number == 0) {
@@ -29,7 +29,7 @@ int main()
 			select.loadFromFile("resource/menuselect.wav");
 			selectSound.setBuffer(select);
 			selectSound.setVolume(40.0);
-			if (totalscore != 0) 
+			if (totalscore != 0)
 			{
 				selectSound.play();
 			}
@@ -72,9 +72,9 @@ int main()
 								section_number = 2;
 								window.close();
 								break;
-							case 2:							
-								return 0;							
-								
+							case 2:
+								return 0;
+
 							}
 						}
 					}
@@ -92,8 +92,8 @@ int main()
 			sf::Sound  selectSound;
 			select.loadFromFile("resource/menuselect.wav");
 			selectSound.setBuffer(select);
-			selectSound.setVolume(40.0);			
-			selectSound.play();			
+			selectSound.setVolume(40.0);
+			selectSound.play();
 
 			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
 
@@ -836,7 +836,7 @@ int main()
 				if (player->getLife() < 0) {
 					totalscore = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
 					section_number = 3;
-					window.close();					
+					window.close();
 				}
 
 				if (player->GetPosition().x >= 1710.f * 4 && player->GetPosition().x <= 1780.f * 4 && player->GetPosition().y <= 75.f * 4) {
@@ -925,7 +925,7 @@ int main()
 
 							case 1:
 								section_number = 0;
-								window.close();								
+								window.close();
 								break;
 
 							}
@@ -937,7 +937,7 @@ int main()
 				retrymenu.draw(window);
 				window.display();
 			}
-		}		
+		}
 	}
 
 

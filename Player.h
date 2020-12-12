@@ -10,11 +10,11 @@ public:
     Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float jumpHeight);
     ~Player();
 
-    void Update(float deltaTime, int hit);   
+    void Update(float deltaTime, int hit);
     void Draw(sf::RenderWindow& window);
     void onCollision(sf::Vector2f direction);
     void SetPosition(float x, float y);
-    void setHP(int x);  
+    void setHP(int x);
     void DecreaseHP(int x);
     void setLife(int x);
     void DecreaseLife(int x);
@@ -29,13 +29,13 @@ public:
     void spawn();
 
 
-    
+
 
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
-    sf::Vector2f GetPosition()      { return body.getPosition(); }
-    Collider GetCollider()          { return Collider(body); }
+    sf::Vector2f GetPosition() { return body.getPosition(); }
+    Collider GetCollider() { return Collider(body); }
     sf::RectangleShape body;
-  
+
 
 private:
 

@@ -7,11 +7,11 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
     this->speed = speed;
     this->jumpHeight = jumpHeight;
     this->HP = 100;
-    this-> row = row;
+    this->row = row;
     this->spawnX = 510.f;
     this->spawnY = 240.f;
     this->life = 3;
-    
+
     faceRight = true;
 
     body.setSize(sf::Vector2f(64.0f, 64.0f));
@@ -28,17 +28,17 @@ Player::~Player()
 
 }
 
-void Player::Update(float deltaTime,int hit)
+void Player::Update(float deltaTime, int hit)
 {
-    velocity.x *= 0.0f;        
+    velocity.x *= 0.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         velocity.x -= speed;
-        
+
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        velocity.x += speed;        
+        velocity.x += speed;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && speedUp || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && speedUp)
     {
@@ -52,15 +52,15 @@ void Player::Update(float deltaTime,int hit)
         jumpHeight = jumpHeight - 50;
         speedUp = true;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)&& canJump && velocity.y<=0) 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && canJump && velocity.y <= 0)
     {
         jumpSound.play();
         canJump = false;
         velocity.y = -sqrt(2.0f * 981.0f * jumpHeight);
     }
 
-    
-    velocity.y += 981.0f * deltaTime;        
+
+    velocity.y += 981.0f * deltaTime;
 
     if (velocity.x == 0.0f)
     {
@@ -74,10 +74,10 @@ void Player::Update(float deltaTime,int hit)
         else
             faceRight = false;
     }
-     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-     {
-       row=2;
-     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+        row = 2;
+    }
 
     if (hit == 1)
     {
@@ -95,7 +95,7 @@ void Player::Update(float deltaTime,int hit)
 
     animation.Update(row, deltaTime, faceRight);
     body.setTextureRect(animation.uvRect);
-    body.move(velocity*deltaTime);
+    body.move(velocity * deltaTime);
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -109,7 +109,7 @@ void Player::onCollision(sf::Vector2f direction)
     {
         velocity.x = 0.0f;
     }
-    else if(direction.x > 0.0f)
+    else if (direction.x > 0.0f)
     {
         velocity.x = 0.0f;
     }
@@ -137,7 +137,7 @@ void Player::setHP(int x)
 
 void Player::DecreaseHP(int x)
 {
-    this->HP-=x;
+    this->HP -= x;
 }
 
 void Player::setLife(int x)
