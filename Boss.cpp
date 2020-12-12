@@ -43,6 +43,7 @@ void Boss::Update(float deltaTime, Player* player)
 {
     if (body.getPosition().x <= spawnX - 500)
     {
+        bosscounterSound.play();
         velocity.x = speed;
         goback = 1;
     }
@@ -62,30 +63,20 @@ void Boss::Update(float deltaTime, Player* player)
             velocity.x = speed;
         }
     }
-
-    if (body.getPosition().x >= player->GetPosition().x + 500 && player->getLife() < -1)
-    {
-        bosscounterSound.play();
-    }
+   
 
     if (player->GetPosition().x + 600 < body.getPosition().x && goback == 1) {
         goback = 0;
         body.setPosition(spawnX, spawnY);
         velocity.x = 0;
+        
     }
     if (player->GetPosition().x - 600 > body.getPosition().x && goback == 1) {
         goback = 0;
         body.setPosition(spawnX, spawnY);
         velocity.x = 0;
-    }
-
-    //   for (auto* bullet : bullets)
-    //   {
-    //    if (player->GetGlobalBounds().intersects(bullet->GetGlobalBounds()))
-    //    {
-    //       bullet->setPosition(-50.0f, -50.0f);
-    //    }
-    //   }
+       
+    }    
 
     if (velocity.x != 0.0f)
     {

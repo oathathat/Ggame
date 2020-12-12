@@ -24,6 +24,8 @@ int main()
 	while (true)
 	{
 		if (section_number == 0) {
+
+
 			sf::SoundBuffer  select;
 			sf::Sound  selectSound;
 			select.loadFromFile("resource/menuselect.wav");
@@ -889,6 +891,11 @@ int main()
 		}
 		if (section_number == 3)
 		{
+			sf::SoundBuffer gameoverBuff;
+			gameoverBuff.loadFromFile("resource/gameover.wav");
+			sf::Sound gameoverSound;
+			gameoverSound.setBuffer(gameoverBuff);
+			gameoverSound.play();
 			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
 			retryMenu retrymenu(window.getSize().x, window.getSize().y);
 			sf::Texture Rtexture;
