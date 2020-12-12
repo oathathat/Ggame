@@ -2,9 +2,18 @@
 
 Menu::Menu(float width, float height)
 {
-	if (!font.loadFromFile("8-BIT WONDER.TTF"))
+	move.loadFromFile("resource/menumove.wav");
+	moveSound.setBuffer(move);
+	moveSound.setVolume(40.0);
+
+	select.loadFromFile("resource/menuselect.wav");
+	selectSound.setBuffer(select);
+	selectSound.setVolume(40.0);
+
+
+	if (!font.loadFromFile("resource/lady.ttf"))
 	{
-		//handel error
+		//handle error
 	}
 	menu[0].setFont(font);
 	menu[0].setFillColor(sf::Color::Red);
@@ -39,6 +48,7 @@ void Menu::MoveUp()
 {
 	if (selectedItemIndex - 1 >= 0)
 	{
+		moveSound.play();
 		menu[selectedItemIndex].setFillColor(sf::Color::White);
 		selectedItemIndex--;
 		menu[selectedItemIndex].setFillColor(sf::Color::Red);
@@ -49,6 +59,7 @@ void Menu::MoveDown()
 {
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
 	{
+		moveSound.play();
 		menu[selectedItemIndex].setFillColor(sf::Color::White);
 		selectedItemIndex++;
 		menu[selectedItemIndex].setFillColor(sf::Color::Red);
