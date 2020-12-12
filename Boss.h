@@ -19,8 +19,6 @@ public:
     void Update(float deltatime, Player* player);
     void Draw(sf::RenderWindow& window);
 
-
-
     void onCollision(sf::Vector2f direction);
     void setPosition(float x, float y);
 
@@ -37,8 +35,8 @@ private:
     float speed;
     bool faceRight;
     sf::RectangleShape body;
-    sf::SoundBuffer soundJump;
-    // sf::Sound sJump;   
+    sf::SoundBuffer bossCbuff;
+    sf::Sound bosscounterSound;
 
     int hp;
     sf::Vector2f velocity;
@@ -46,7 +44,7 @@ private:
     float jumpHeight;
     float spawnX;
     float spawnY;
-    int goback=0;
+    int goback;
 
 };
 

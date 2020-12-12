@@ -18,6 +18,9 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
     body.setOrigin(body.getSize() / 2.0f);
     body.setPosition(300.f, 250.f);
     body.setTexture(texture);
+    jumpBuff.loadFromFile("resource/jump.wav");
+    jumpSound.setBuffer(jumpBuff);
+    jumpSound.setVolume(30.0);
 }
 
 Player::~Player()
@@ -52,6 +55,7 @@ void Player::Update(float deltaTime,int hit)
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)&& canJump && velocity.y<=0) 
     {
+        jumpSound.play();
         canJump = false;
         velocity.y = -sqrt(2.0f * 981.0f * jumpHeight);
     }

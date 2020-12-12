@@ -113,43 +113,50 @@ int main()
 	lifeNum.setFillColor(sf::Color::Cyan);		
 
 	//sound
-	sf::SoundBuffer shotBuff, coinBuff, enemydieBuff, jumpBuff,hitBuff,lifeBuff,gameoverBuff,ultiBuff,powerupBuff;
+	sf::SoundBuffer shotBuff, coinBuff, enemydieBuff,hitBuff,lifeBuff,gameoverBuff,ultiBuff,powerupBuff,HPBuff,delifeBuff;
 	shotBuff.loadFromFile("resource/fireball.wav");
 	coinBuff.loadFromFile("resource/coin.wav");
-	enemydieBuff.loadFromFile("resource/death.wav");
-	jumpBuff.loadFromFile("resource/jump.wav");
+	enemydieBuff.loadFromFile("resource/death.wav");	
 	hitBuff.loadFromFile("resource/hit.wav");
 	lifeBuff.loadFromFile("resource/life.wav");
 	gameoverBuff.loadFromFile("resource/Gameover.wav");
 	ultiBuff.loadFromFile("resource/FireballWhoosh.wav");
-	powerupBuff.loadFromFile("resource/");
+	powerupBuff.loadFromFile("resource/mana.wav");
+	HPBuff.loadFromFile("resource/HP.wav");
+	delifeBuff.loadFromFile("resource/Delife.wav");
+	
 
-	sf::Sound shotSound, coinSound, enemydieSound,jumpSound,hitSound,lifeSound,gameoverSound,ultiSound,powerupSound;
+	sf::Sound shotSound, coinSound, enemydieSound,hitSound,lifeSound,gameoverSound,ultiSound,powerupSound,HPsound,delifeSound;
 	shotSound.setBuffer(shotBuff);
 	coinSound.setBuffer(coinBuff);
 	enemydieSound.setBuffer(enemydieBuff);
-	jumpSound.setBuffer(jumpBuff);
 	hitSound.setBuffer(hitBuff);
 	lifeSound.setBuffer(lifeBuff);
 	gameoverSound.setBuffer(gameoverBuff);
 	ultiSound.setBuffer(ultiBuff);
 	powerupSound.setBuffer(powerupBuff);
+	HPsound.setBuffer(HPBuff);
+	delifeSound.setBuffer(delifeBuff);
+
 
 
 	shotSound.setVolume(30.0);
 	coinSound.setVolume(30.0);
-	enemydieSound.setVolume(30.0);
-	jumpSound.setVolume(30.0);
+	enemydieSound.setVolume(30.0);	
 	hitSound.setVolume(30.0);
-	lifeSound.setVolume(30.0);
+	lifeSound.setVolume(40.0);
 	gameoverSound.setVolume(30.0);
 	ultiSound.setVolume(50.0);
-	
+	powerupSound.setVolume(30.0);
+	HPsound.setVolume(50.0);
+	delifeSound.setVolume(30.0);
+
+
 	sf::Music song;
 	song.openFromFile("resource/song.wav");
-	song.setVolume(20.0);
+	song.setVolume(18.0);
 	song.play();
-
+	   
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 130.846f, 4 * 129.25f-6)));
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 508.797f, 4 * 129.25f - 6)));
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 240.761f, 4 * 129.25f - 6)));
@@ -184,7 +191,7 @@ int main()
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2288.0f, 4 * 66.0f - 6)));
 		monster.push_back(new Enemy(&monsterTexture, sf::Vector2u(6, 2), 0.3f, 140.0f, sf::Vector2f(4 * 2430.0f, 4 * 66.0f - 6)));
 		
-	boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(4, 2), 0.3f, 165.0f, sf::Vector2f(4* 3200.0f, 4 * 118.0f)));
+	boss1.push_back(new Boss   (&BossTexture, sf::Vector2u(4, 2), 0.3f, 165.0f, sf::Vector2f(4* 3200.0f, 4 * 118.0f-50)));
 	coin.push_back(new Item	(&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 130.0f, 4 * 100.0f)));
     coin.push_back(new Item (&coinTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(4 * 1647.0f, 4 * 178.0f)));
 
@@ -222,7 +229,7 @@ int main()
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 16.0f, 4 * 14.0f), sf::Vector2f(4 * 1648.0f, 4 * 193.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 24.0f, 4 * 15.0f), sf::Vector2f(4 * 1592.0f, 4 * 81.5f)));	
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 40.0f, 4 * 15.0f), sf::Vector2f(4 * 1648.0f, 4 * 81.5f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 160.0f, 4 * 15.0f), sf::Vector2f(4 * 1768.0f, 4 * 81.5f)));
+	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 158.0f, 4 * 15.0f), sf::Vector2f(4 * 1768.0f, 4 * 81.5f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 96.0f, 4 * 48.0f), sf::Vector2f(4 * 1800.0f, 4 * 113.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 48.0f, 4 * 15.0f), sf::Vector2f(4 * 1904.0f, 4 * 81.5f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 112.0f, 4 * 15.0f), sf::Vector2f(4 * 2016.0f, 4 * 81.5f)));
@@ -293,6 +300,7 @@ int main()
 		for (Platform& fire : fire)
 			if (fire.GetCollider().CheckCollision(playerCollision, direction, 1.0f))
 			{
+				delifeSound.play();
 				player->spawn();
 				player->DecreaseLife(1);
 				player->setHP(100);
@@ -352,7 +360,7 @@ int main()
 		for (auto* bullet : special) {
 			bullet->Update();
 			if (bullet->GetPosition().x >= view.getCenter().x + 500 || bullet->GetPosition().x <= view.getCenter().x - 500)
-			{
+			{				
 				delete special.at(counter11);
 				special.erase(special.begin() + counter11);
 				counter11--;
@@ -393,6 +401,7 @@ int main()
 			{
 				if (i->GetGlobalBounds().intersects(Bullet->GetGlobalBounds()))
 				{
+					hitSound.play();
 					i->DecreaseHP(1);
 					delete playerBullet.at(counter);
 					playerBullet.erase(playerBullet.begin() + counter);
@@ -405,6 +414,7 @@ int main()
 			{
 				if (i->GetGlobalBounds().intersects(Bullet->GetGlobalBounds()))
 				{
+					hitSound.play();
 					i->DecreaseHP(100);					
 				}				
 			}
@@ -433,6 +443,7 @@ int main()
 			}
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()) && hiTtime >= 2)
 			{
+				delifeSound.play();
 				player->DecreaseLife(1);
 				player->spawn();
 				player->setHP(100);
@@ -446,6 +457,7 @@ int main()
 				if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 				{
 					score = score + 10;
+					coinSound.play();
 					delete coin.at(counterC);
 					coin.erase(coin.begin() + counterC);
 					counterC--;
@@ -458,6 +470,7 @@ int main()
 		{
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 			{
+				HPsound.play();
 				player->DecreaseHP(-25);
 				delete potion.at(counterD);
 				potion.erase(potion.begin() + counterD);
@@ -471,6 +484,7 @@ int main()
 		{
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 			{
+				lifeSound.play();
 				player->DecreaseLife(-1);
 				delete heart.at(counterE);
 				heart.erase(heart.begin() + counterE);
@@ -485,6 +499,7 @@ int main()
 			if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 			{			
 				ulti = ulti+1 ;
+				powerupSound.play();
 				delete mana.at(counterF);
 				mana.erase(mana.begin() + counterF);
 				counterF--;
@@ -499,14 +514,15 @@ int main()
 			if (i->getHP() <= 0)
 			{
 				if (manaRandom == 0) {
-					mana.push_back(new Item(&manaTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y+25)));
+					mana.push_back(new Item(&manaTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y+15)));
 				}
 				else if (hrandom == 0) {
 					heart.push_back(new Item(&heartTexture, sf::Vector2u(6, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y + 10)));
 				}
 				else if (random == 0) {
 					potion.push_back(new Item(&potionTexture, sf::Vector2u(1, 1), 0.4f, sf::Vector2f(i->getPosition().x, i->getPosition().y + 20)));
-				}						
+				}				
+				enemydieSound.play();
 				delete monster.at(counter);
 				monster.erase(monster.begin() + counter);				
 				counter--;				
@@ -526,6 +542,7 @@ int main()
 
 			if (i->getHP() <= 0)
 			{
+				enemydieSound.play();
 				delete boss1.at(bosscounter);
 				boss1.erase(boss1.begin() + bosscounter);
 				bosscounter--;
@@ -620,12 +637,18 @@ int main()
 		//for (Platform& platform : platforms)
 		//	platform.Draw(window);
 		if (player->getHP() <= 0) {
+			delifeSound.play();
 			player->spawn();
 			player->setHP(100);
 			player->DecreaseLife(1);
 		}
+		if (player->GetPosition().x >= 1710.f * 4 && player->GetPosition().x <= 1780.f * 4 && player->GetPosition().y <= 75.f * 4) {
+			player->setspawnX(1730.f * 4);
+			player->setspawnY(60.0f*4);
+		}
 		for (auto* i : monster)
 			i->Draw(window);
+
 		for (auto* bullet : playerBullet)
 		{
 			bullet->Draw(window);

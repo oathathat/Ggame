@@ -1,5 +1,6 @@
 #pragma once
 #include<SFML/Graphics.hpp>
+#include<SFML/Audio.hpp>
 #include "Animation.h"
 #include "Collider.h"
 
@@ -51,4 +52,6 @@ private:
     int life;
     float spawnX;
     float spawnY;
+    sf::SoundBuffer jumpBuff;
+    sf::Sound jumpSound;
 };

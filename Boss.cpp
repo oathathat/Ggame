@@ -10,7 +10,7 @@ Boss::Boss(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, floa
     this->speed = speed;
     row = 0;
     faceRight = true;
-    this-> goback = goback;
+    this-> goback = 0;
     this->hp = 10;
 
     body.setSize(sf::Vector2f(80, 80));
@@ -20,6 +20,9 @@ Boss::Boss(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, floa
     body.setPosition(position);
     this->spawnX = body.getPosition().x;
     this->spawnY = body.getPosition().y;
+    bossCbuff.loadFromFile("resource/Inception.wav");
+    bosscounterSound.setBuffer(bossCbuff);
+    bosscounterSound.setVolume(30.0);
 }
 
 Boss::~Boss()
@@ -39,27 +42,33 @@ int Boss::getHP()
 void Boss::Update(float deltaTime, Player* player)
 {       
     if (body.getPosition().x <= spawnX -500)
-    {
+    {                 
         velocity.x = speed;
         goback = 1;            
     }   
     if (body.getPosition().x >= spawnX + 500)
-    {
+    {          
         velocity.x = -speed;
         goback = 1;
     }
     if (player->GetPosition().x + 500 > body.getPosition().x && body.getPosition().x>= spawnX -500 && goback == 0)
-    {
+    {                
         if (body.getPosition().x>player->GetPosition().x)
-        {
-            velocity.x = -speed;            
+        {               
+            velocity.x = -speed;    
         }
         else if (body.getPosition().x < player->GetPosition().x)
-        {
+        {   
             velocity.x = speed;            
         }
     }
-    if (player->GetPosition().x + 600 < body.getPosition().x&& goback==1) {
+
+    if (body.getPosition().x >= player->GetPosition().x+500)
+    {
+        bosscounterSound.play();
+    }
+
+    if (player->GetPosition().x + 600 < body.getPosition().x && goback==1) {
         goback = 0;
         body.setPosition(spawnX,spawnY );
         velocity.x = 0;
