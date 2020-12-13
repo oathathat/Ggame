@@ -14,16 +14,21 @@
 #include "Item.h"
 #include"Menu.h"
 #include"retryMenu.h"
+#include"difficult.h"
 int section_number = 0;
 
 int main()
 {
 	//variable	
-	int totalscore = 0;
+	int totalscoreE = 0;
+	int totalscoreN=0;
+	int totalscoreH=0;
+	int difficultz=0;
 
 	while (true)
 	{
-		if (section_number == 0) {
+		if (section_number == 0) 
+		{
 
 
 			sf::SoundBuffer  select;
@@ -31,7 +36,7 @@ int main()
 			select.loadFromFile("resource/menuselect.wav");
 			selectSound.setBuffer(select);
 			selectSound.setVolume(40.0);
-			if (totalscore != 0)
+			if (totalscoreE != 0)
 			{
 				selectSound.play();
 			}
@@ -56,17 +61,17 @@ int main()
 					case sf::Event::KeyReleased:
 						switch (event.key.code)
 						{
-						case sf::Keyboard::Up:
+						case sf::Keyboard::W:
 							menu.MoveUp();
 							break;
-						case sf::Keyboard::Down:
+						case sf::Keyboard::S:
 							menu.MoveDown();
 							break;
 						case sf::Keyboard::Return:
 							switch (menu.GetPressedItem())
 							{
 							case 0:
-								section_number = 1;
+								section_number = 4;
 								std::cout << "Play button has been pressed" << std::endl;
 								window.close();
 								break;
@@ -103,7 +108,7 @@ int main()
 			int hit = 0;
 			int ulti = 0;
 			int score = 0;
-			unsigned int randomPercent = 33;
+			unsigned int randomPercent = 24;
 			int animationFrame = 0;
 
 			sf::Texture playerTexture;
@@ -136,8 +141,6 @@ int main()
 			std::vector<Item*> mana;
 			std::vector<Item*> heart;
 			std::vector<Item*> key;
-
-
 
 			sf::Texture bulletTexture;
 			bulletTexture.loadFromFile("resource/fireball1.png");
@@ -287,7 +290,6 @@ int main()
 			delifeSound.setVolume(30.0);
 			hitplayerSound.setVolume(28.0);
 
-
 			sf::Music song;
 			song.openFromFile("resource/song.wav");
 			song.setVolume(18.0);
@@ -398,6 +400,45 @@ int main()
 			platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 61.0f, 4 * 32.0f), sf::Vector2f(4 * 481.5f, 4 * 41.0f)));
 			platforms.push_back(Platform(nullptr, sf::Vector2f(4 * 32.0f, 4 * 48.0f), sf::Vector2f(4 * 3304.0f, 4 * 49.0f)));
 
+			for (auto* i : monster)
+			{
+				if (difficultz == 0) 
+				{
+					i->setHP(2);
+					i->setATK(25);
+					i->setSpeed(140);
+				}
+				else if (difficultz == 1) 
+				{
+					i->setHP(3);
+					i->setATK(50);
+					i->setSpeed(165);
+				}
+				else if (difficultz == 2) 
+				{
+					i->setHP(4);
+					i->setATK(75);
+					i->setSpeed(190);
+				}
+
+			}
+			for(auto* i : boss1)
+			{
+				if (difficultz == 0)
+				{
+					i->setHP(50);
+					
+				}
+				else if (difficultz == 1)
+				{
+					i->setHP(200);
+					;
+				}
+				else if (difficultz == 2)
+				{
+					i->setHP(400);					
+				}
+			}
 
 			float deltaTime = 0.0f;
 			float bulletTime = 0.0f;
@@ -419,7 +460,7 @@ int main()
 				if (deltaTime > 1.f / 40.f)
 					deltaTime = 1.f / 40.f;
 				srand(time(0));
-				int random = rand() % 4;
+				int random = rand() % 5;
 				int hrandom = rand() % 12;
 				int manaRandom = rand() % randomPercent;
 				sf::Event event;
@@ -428,6 +469,7 @@ int main()
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed) {
 						window.close();
 						return 0;
+
 					}
 				}
 
@@ -577,7 +619,7 @@ int main()
 					if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()) && hiTtime >= 2)
 					{
 						hitplayerSound.play();
-						player->DecreaseHP(25);
+						player->DecreaseHP(i->getATK());
 						hit = 1;
 						hittime.restart();
 					}
@@ -668,13 +710,23 @@ int main()
 				{
 					if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 					{
-						totalscore = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+						if (difficultz == 0)
+						{
+							totalscoreE = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+						}
+						if (difficultz == 1)
+						{
+							totalscoreN = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+						}
+						if (difficultz == 2)
+						{
+							totalscoreH = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+						}
 						powerupSound.play();
 						delete key.at(counterG);
 						key.erase(key.begin() + counterG);
 						counterG--;
-
-						section_number = 4;
+						section_number = 3;
 						window.close();
 						break;
 					}
@@ -836,7 +888,18 @@ int main()
 				}
 
 				if (player->getLife() < 0) {
-					totalscore = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+					if (difficultz == 0)
+					{
+						totalscoreE = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+					}
+					if (difficultz == 1)
+					{
+						totalscoreN = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+					}
+					if (difficultz == 2)
+					{
+						totalscoreH = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+					}
 					section_number = 3;
 					window.close();
 				}
@@ -845,9 +908,10 @@ int main()
 					player->setspawnX(1730.f * 4);
 					player->setspawnY(60.0f * 4);
 				}
-				for (auto* i : monster)
+				for (auto* i : monster) 
+				{
 					i->Draw(window);
-
+				}
 				for (auto* bullet : playerBullet)
 				{
 					bullet->Draw(window);
@@ -889,6 +953,7 @@ int main()
 			}
 
 		}
+		if (section_number==2){}
 		if (section_number == 3)
 		{
 			sf::SoundBuffer gameoverBuff;
@@ -915,10 +980,10 @@ int main()
 					case sf::Event::KeyReleased:
 						switch (event.key.code)
 						{
-						case sf::Keyboard::Up:
+						case sf::Keyboard::W:
 							retrymenu.MoveUp();
 							break;
-						case sf::Keyboard::Down:
+						case sf::Keyboard::S:
 							retrymenu.MoveDown();
 							break;
 						case sf::Keyboard::Return:
@@ -945,8 +1010,74 @@ int main()
 				window.display();
 			}
 		}
+		if (section_number == 4) {
+			sf::SoundBuffer  select;
+			sf::Sound  selectSound;
+			select.loadFromFile("resource/menuselect.wav");
+			selectSound.setBuffer(select);
+			selectSound.setVolume(40.0);			
+			selectSound.play();
+			
+
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			difficult menu(window.getSize().x, window.getSize().y);
+			sf::Texture Mtexture;
+			Mtexture.loadFromFile("resource/menuBG.jpg");
+
+			sf::Sprite Mbackground;
+			Mbackground.setTexture(Mtexture);
+			Mbackground.setPosition(0, 15);
+
+			while (window.isOpen())
+			{
+
+				sf::Event event;
+				while (window.pollEvent(event))
+				{
+					switch (event.type)
+					{
+					case sf::Event::KeyReleased:
+						switch (event.key.code)
+						{
+						case sf::Keyboard::W:
+							menu.MoveUp();
+							break;
+						case sf::Keyboard::S:
+							menu.MoveDown();
+							break;
+						case sf::Keyboard::Return:
+							switch (menu.GetPressedItem())
+							{
+							case 0:
+								difficultz = 0;
+								section_number = 1;									
+								window.close();
+								break;
+							case 1:
+								difficultz = 1;
+								section_number = 1;
+								window.close();
+								break;
+							case 2:
+								difficultz = 2;
+								section_number = 1;
+								window.close();
+								break;
+
+							}
+						}
+					}
+				}
+
+				window.clear();
+				window.draw(Mbackground);
+				menu.draw(window);
+				window.display();
+
+		}
+		
 	}
-
-
+		if(section_number ==5){}
+	}
 	return 0;
 }

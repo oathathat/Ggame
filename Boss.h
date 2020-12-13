@@ -21,7 +21,7 @@ public:
 
     void onCollision(sf::Vector2f direction);
     void setPosition(float x, float y);
-
+    void setHP(int x);
 
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
     sf::Vector2f getPosition() { return body.getPosition(); }

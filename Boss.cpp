@@ -124,3 +124,8 @@ void Boss::setPosition(float x, float y)
 {
     body.setPosition(x, y);
 }
+
+void Boss::setHP(int x)
+{
+    this->hp = x;
+}

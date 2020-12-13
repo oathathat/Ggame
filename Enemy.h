@@ -22,7 +22,11 @@ public:
     void Draw(sf::RenderWindow& window);       
     void onCollision(sf::Vector2f direction);
     void setPosition(float x, float y);
+    void setHP(int x);
+    void setATK(int x);
+    void setSpeed(int x);
     int getATK();
+    
 
     
     sf::Clock MoveClock;

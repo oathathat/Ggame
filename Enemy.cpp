@@ -39,6 +39,7 @@ int Enemy::getHP()
     return this->hp;
 }
 
+
 void Enemy::Update(float deltaTime, Player* player)
 {
     MoveClock.getElapsedTime().asSeconds();
@@ -119,6 +120,21 @@ void Enemy::onCollision(sf::Vector2f direction)
 void Enemy::setPosition(float x, float y)
 {
     body.setPosition(x, y);
+}
+
+void Enemy::setHP(int x)
+{
+    this->hp = x;
+}
+
+void Enemy::setATK(int x)
+{
+    this->ATK = x;
+}
+
+void Enemy::setSpeed(int x)
+{
+    this->speed = x;
 }
 
 int Enemy::getATK()
