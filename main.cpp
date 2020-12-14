@@ -18,12 +18,11 @@
 #include"difficult.h"
 #include<algorithm>
 #include"winMenu.h"
-int section_number = 0;
+int section_number = 4;
 
 int main()
 {
-	sf::String Input;
-	//variable	
+	sf::String Input;	
 	int totalscoreE = 0, totalscoreN = 0, totalscoreH = 0, difficultz = 0, a = 0;	
 	while (true)
 	{
@@ -1147,8 +1146,6 @@ int main()
 				PlayerScoreH[i].setPosition(window.getSize().x / 3 + 500, window.getSize().y / 2 -80+ (80 * i));
 			}
 			fclose(fp);
-
-			//if (!texture.loadFromFile("Player/ScoreBoard.jpg"));
 				
 			Text.setPosition(window.getSize().x / 2 - 120, window.getSize().y / 2-250);
 			Text.setCharacterSize(30);
@@ -1162,7 +1159,6 @@ int main()
 			Easy.setString("Easy");
 			Easy.setFillColor(sf::Color::Red);
 			
-
 			Normal.setCharacterSize(25);
 			Normal.setPosition( 440 ,window.getSize().y / 2 - 150 );
 			Normal.setFont(font);

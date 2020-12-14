@@ -15,17 +15,17 @@ difficult::difficult(float width, float height)
 	Difficult[0].setFont(font);
 	Difficult[0].setFillColor(sf::Color::Red);
 	Difficult[0].setString("Easy");
-	Difficult[0].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 1));
+	Difficult[0].setPosition(sf::Vector2f(width / 2-30, height / (MAX_NUMBER_OF_ITEMS + 1) * 1));
 
 	Difficult[1].setFont(font);
 	Difficult[1].setFillColor(sf::Color::White);
 	Difficult[1].setString("Normal");
-	Difficult[1].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
+	Difficult[1].setPosition(sf::Vector2f(width / 2-58, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
 
 	Difficult[2].setFont(font);
 	Difficult[2].setFillColor(sf::Color::White);
 	Difficult[2].setString("Hard");
-	Difficult[2].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
+	Difficult[2].setPosition(sf::Vector2f(width / 2-30, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
 
 	selectedItemIndex = 0;
 }
