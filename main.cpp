@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <SFML/Graphics.hpp>
 #include<SFML/Audio.hpp>
 #include <iostream>
@@ -15,32 +16,29 @@
 #include"Menu.h"
 #include"retryMenu.h"
 #include"difficult.h"
+#include<algorithm>
+
 int section_number = 0;
 
 int main()
 {
+	sf::String Input;
 	//variable	
-	int totalscoreE = 0;
-	int totalscoreN=0;
-	int totalscoreH=0;
-	int difficultz=0;
-
+	int totalscoreE = 0, totalscoreN = 0, totalscoreH = 0, difficultz = 0, a = 0;	
 	while (true)
 	{
 		if (section_number == 0) 
 		{
-
-
 			sf::SoundBuffer  select;
 			sf::Sound  selectSound;
 			select.loadFromFile("resource/menuselect.wav");
 			selectSound.setBuffer(select);
 			selectSound.setVolume(40.0);
-			if (totalscoreE != 0)
+			if (a != 0)
 			{
 				selectSound.play();
 			}
-
+			a = 1;
 			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
 			Menu menu(window.getSize().x, window.getSize().y);
 			sf::Texture Mtexture;
@@ -56,6 +54,10 @@ int main()
 				sf::Event event;
 				while (window.pollEvent(event))
 				{
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed) {
+						window.close();
+						return 0;
+					}
 					switch (event.type)
 					{
 					case sf::Event::KeyReleased:
@@ -71,7 +73,7 @@ int main()
 							switch (menu.GetPressedItem())
 							{
 							case 0:
-								section_number = 4;
+								section_number = 5;
 								std::cout << "Play button has been pressed" << std::endl;
 								window.close();
 								break;
@@ -108,7 +110,7 @@ int main()
 			int hit = 0;
 			int ulti = 0;
 			int score = 0;
-			unsigned int randomPercent = 24;
+			unsigned int randomPercent = 25;
 			int animationFrame = 0;
 
 			sf::Texture playerTexture;
@@ -276,7 +278,6 @@ int main()
 
 			sf::Sound hitplayerSound;
 			hitplayerSound.setBuffer(hitplayerBuff);
-
 
 			shotSound.setVolume(30.0);
 			coinSound.setVolume(30.0);
@@ -469,7 +470,6 @@ int main()
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed) {
 						window.close();
 						return 0;
-
 					}
 				}
 
@@ -713,6 +713,33 @@ int main()
 						if (difficultz == 0)
 						{
 							totalscoreE = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
+							FILE* fp;
+							char temp[255];
+							int score[6];
+							std::string names[6];
+							std::vector <std::pair<int, std::string>> userScore;
+							fp = fopen("./Score.txt", "r");
+							for (int i = 0; i < 5; i++)
+							{
+								fscanf(fp, "%s", &temp);
+								names[i] = temp;
+								fscanf(fp, "%d", &score[i]);
+								userScore.push_back(std::make_pair(score[i], names[i]));
+							}
+							names[5] = Input;
+							score[5] = totalscoreE;
+							userScore.push_back(std::make_pair(score[5], names[5]));
+							sort(userScore.begin(), userScore.end());
+
+							fclose(fp);
+							fopen("./Score.txt", "w");
+							for (int i = 5; i >= 1; i--)
+							{
+								strcpy(temp, userScore[i].second.c_str());
+								fprintf(fp, "%s %d\n", temp, userScore[i].first);
+							}
+							fclose(fp);
+							
 						}
 						if (difficultz == 1)
 						{
@@ -722,6 +749,7 @@ int main()
 						{
 							totalscoreH = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
 						}
+
 						powerupSound.play();
 						delete key.at(counterG);
 						key.erase(key.begin() + counterG);
@@ -953,7 +981,93 @@ int main()
 			}
 
 		}
-		if (section_number==2){}
+		if (section_number==2){
+			sf::SoundBuffer  select;
+			sf::Sound  selectSound;
+			select.loadFromFile("resource/menuselect.wav");
+			selectSound.setBuffer(select);
+			selectSound.setVolume(40.0);
+			selectSound.play();
+
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			sf::Texture Mtexture;
+			Mtexture.loadFromFile("resource/scoreboard.png");
+			sf::Sprite Mbackground;
+			Mbackground.setTexture(Mtexture);
+			Mbackground.setPosition(-460,0);
+
+			sf::Font font;
+			font.loadFromFile("resource/lady.ttf");
+			
+			std::string Name[6];
+			sf::Text Text;
+			sf::Text PlayerName[6];
+			sf::Text PlayerScoreE[6], PlayerScoreN[6], PlayerScoreH[6];
+			FILE* fp;
+			char temp[255];
+			int scoreE[6],scoreN[6],scoreH[6];
+
+			std::vector <std::pair<int, std::string>> userScoreE, userScoreN, userScoreH;
+
+			fp = fopen("./Score.txt", "r");
+			for (int i = 0; i < 5; i++)
+			{
+				fscanf(fp, "%s", &temp);
+				Name[i] = temp;
+				PlayerName[i].setString(Name[i]);
+				fscanf(fp, "%d", &scoreE[i]);
+				PlayerScoreE[i].setString(std::to_string(scoreE[i]));
+				userScoreE.push_back(std::make_pair(scoreE[i], Name[i]));
+			}
+			for (int i = 0; i < 5; i++)
+			{
+				PlayerName[i].setFont(font);
+				PlayerName[i].setCharacterSize(20);
+				PlayerName[i].setFillColor(sf::Color::White);
+				PlayerName[i].setPosition(window.getSize().x / 2 - 150, window.getSize().y / 2 - 50 + (80 * i));
+				PlayerScoreE[i].setFont(font);
+				PlayerScoreE[i].setCharacterSize(20);
+				PlayerScoreE[i].setFillColor(sf::Color::White);
+				PlayerScoreE[i].setPosition(window.getSize().x / 2 + 100, window.getSize().y / 2 - 50 + (80 * i));
+			}
+
+			//if (!texture.loadFromFile("Player/ScoreBoard.jpg"));
+				
+			Text.setPosition(window.getSize().x / 2 - 50, window.getSize().y / 2);
+			Text.setCharacterSize(25);
+			Text.setFont(font);
+
+			while (window.isOpen())
+			{
+
+				sf::Event event;
+				while (window.pollEvent(event))
+				{
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed) 
+					{
+						window.close();
+						return 0;
+					}
+				}
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+				{
+					section_number = 0;
+					window.close();
+					break;
+				}
+				window.clear();
+
+				window.draw(Mbackground);
+				for (int i = 0; i < 5; i++)
+				{
+					window.draw(PlayerName[i]);
+					window.draw(PlayerScoreE[i]);
+				}
+				window.display();
+			}
+		}
+
 		if (section_number == 3)
 		{
 			sf::SoundBuffer gameoverBuff;
@@ -975,6 +1089,11 @@ int main()
 				sf::Event event;
 				while (window.pollEvent(event))
 				{
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed) 
+					{
+						window.close();
+						return 0;
+					}
 					switch (event.type)
 					{
 					case sf::Event::KeyReleased:
@@ -1034,6 +1153,10 @@ int main()
 				sf::Event event;
 				while (window.pollEvent(event))
 				{
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed) {
+						window.close();
+						return 0;
+					}
 					switch (event.type)
 					{
 					case sf::Event::KeyReleased:
@@ -1077,7 +1200,72 @@ int main()
 		}
 		
 	}
-		if(section_number ==5){}
+		if (section_number ==5){
+			sf::SoundBuffer  select;
+			sf::Sound  selectSound;
+			select.loadFromFile("resource/menuselect.wav");
+			selectSound.setBuffer(select);
+			selectSound.setVolume(40.0);
+			selectSound.play();
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			sf::Texture Mtexture;
+			Mtexture.loadFromFile("resource/menuBG.jpg");
+			sf::Sprite Mbackground;
+			Mbackground.setTexture(Mtexture);
+			Mbackground.setPosition(0, 15);
+
+			sf::Font font;
+			font.loadFromFile("resource/lady.ttf");
+			sf::Text Entertext;			
+			Entertext.setPosition(window.getSize().x / 2 - 50, window.getSize().y / 2);
+			Entertext.setCharacterSize(25);
+			Entertext.setFont(font);
+			while (window.isOpen())
+			{
+				sf::Event event;
+				while (window.pollEvent(event))
+				{
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed) 
+					{
+						window.close();
+						return 0;
+					}
+					if (event.type == sf::Event::TextEntered)
+					{
+						if (event.text.unicode < 128)
+						{
+							if (event.text.unicode == static_cast <sf::Uint32>(8) && Input.getSize() > 0)
+							{
+								Input.erase(Input.getSize() - 1);
+							}
+							else
+							{
+								if (Input.getSize() < 7 && event.text.unicode != 13)
+								{
+									if (event.text.unicode == 32)
+									{
+										event.text.unicode = 95;
+									}
+									Input += event.text.unicode;
+								}
+							}
+						}
+					}
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && Input.getSize() >= 1)
+					{
+						section_number = 4;
+						window.close();
+						break;
+					}
+					window.clear();
+					Entertext.setString(Input);
+					window.draw(Mbackground);
+					window.draw(Entertext);
+					window.display();
+				}
+		}
+	}
+
 	}
 	return 0;
 }

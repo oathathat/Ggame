@@ -1,0 +1,5 @@
+OAT 141
+OATLNW 120
+v 7
+g 6
+c 5
