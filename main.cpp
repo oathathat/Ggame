@@ -17,7 +17,7 @@
 #include"retryMenu.h"
 #include"difficult.h"
 #include<algorithm>
-
+#include"winMenu.h"
 int section_number = 0;
 
 int main()
@@ -816,7 +816,7 @@ int main()
 						delete key.at(counterG);
 						key.erase(key.begin() + counterG);
 						counterG--;
-						section_number = 3;
+						section_number = 6;
 						window.close();
 						break;
 					}
@@ -1417,8 +1417,68 @@ int main()
 				}
 		}
 	}
-		if(section_number == 6){}
+		if(section_number == 6){
+			sf::SoundBuffer winBuff;
+			winBuff.loadFromFile("resource/wining.wav");
+			sf::Sound winSound;
+			winSound.setBuffer(winBuff);
+			//winSound.play();
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			winMenu winmenu(window.getSize().x, window.getSize().y);
+			sf::Texture Rtexture;
+			Rtexture.loadFromFile("resource/winBG.jpg");
 
+			sf::Sprite Rbackground;
+			Rbackground.setTexture(Rtexture);
+			Rbackground.setPosition(0, 0);
+
+			while (window.isOpen())
+			{
+				sf::Event event;
+				while (window.pollEvent(event))
+				{
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::Closed)
+					{
+						window.close();
+						return 0;
+					}
+					switch (event.type)
+					{
+					case sf::Event::KeyPressed:
+						switch (event.key.code)
+						{
+						case sf::Keyboard::W:
+							winmenu.MoveUp();
+							break;
+						case sf::Keyboard::S:
+							winmenu.MoveDown();
+							break;
+						case sf::Keyboard::Return:
+							switch (winmenu.GetPressedItem())
+							{
+							case 0:
+
+								section_number = 0;
+								window.close();
+								break;
+
+							case 1:
+								section_number = 2;
+								window.close();
+								break;
+
+							}
+						}
+					}
+				}
+				window.clear();
+				window.draw(Rbackground);
+				winmenu.draw(window);
+				window.display();
+
+		}
+
+	}
 	}
 	return 0;
 }

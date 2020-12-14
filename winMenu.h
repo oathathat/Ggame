@@ -1,5 +1,23 @@
 #pragma once
+#include <SFML/Graphics.hpp>
+#include<SFML/Audio.hpp>
+#define MAX_NUMBER_OF_ITEMS 2
 class winMenu
 {
+public:
+	winMenu(float width, float height);
+	~winMenu();
+
+	void draw(sf::RenderWindow& window);
+	void MoveUp();
+	void MoveDown();
+	int GetPressedItem() { selectSound.play(); return selectedItemIndex; }
+
+private:
+	int selectedItemIndex;
+	sf::Font font;
+	sf::Text menu[MAX_NUMBER_OF_ITEMS];
+	sf::SoundBuffer move, select;
+	sf::Sound moveSound, selectSound;
 };
 
