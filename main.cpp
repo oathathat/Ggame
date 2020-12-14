@@ -60,7 +60,7 @@ int main()
 					}
 					switch (event.type)
 					{
-					case sf::Event::KeyReleased:
+					case sf::Event::KeyPressed:
 						switch (event.key.code)
 						{
 						case sf::Keyboard::W:
@@ -800,8 +800,7 @@ int main()
 								}
 								fclose(fp);
 							}					
-								
-
+						
 						powerupSound.play();
 						delete key.at(counterG);
 						key.erase(key.begin() + counterG);
@@ -1168,7 +1167,6 @@ int main()
 				window.display();
 			}
 		}
-
 		if (section_number == 3)
 		{
 			sf::SoundBuffer gameoverBuff;
@@ -1197,7 +1195,7 @@ int main()
 					}
 					switch (event.type)
 					{
-					case sf::Event::KeyReleased:
+					case sf::Event::KeyPressed:
 						switch (event.key.code)
 						{
 						case sf::Keyboard::W:
@@ -1247,7 +1245,7 @@ int main()
 			sf::Sprite Mbackground;
 			Mbackground.setTexture(Mtexture);
 			Mbackground.setPosition(0, 15);
-
+			
 			while (window.isOpen())
 			{
 
@@ -1260,7 +1258,7 @@ int main()
 					}
 					switch (event.type)
 					{
-					case sf::Event::KeyReleased:
+					case sf::Event::KeyPressed:
 						switch (event.key.code)
 						{
 						case sf::Keyboard::W:
@@ -1301,7 +1299,7 @@ int main()
 		}
 		
 	}
-		if (section_number ==5){
+		if (section_number == 5){
 			sf::SoundBuffer  select;
 			sf::Sound  selectSound;
 			select.loadFromFile("resource/menuselect.wav");

@@ -1,5 +1,5 @@
+OATN 175
 TEST2 143
+OATE 130
 sssssss 65
 OAT2 61
-BUG 46
-g 6
