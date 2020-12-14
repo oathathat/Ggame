@@ -18,7 +18,7 @@
 #include"difficult.h"
 #include<algorithm>
 #include"winMenu.h"
-int section_number = 4;
+int section_number = 0;
 
 int main()
 {
@@ -33,6 +33,21 @@ int main()
 			select.loadFromFile("resource/menuselect.wav");
 			selectSound.setBuffer(select);
 			selectSound.setVolume(40.0);
+			sf::Font font;
+			font.loadFromFile("resource/lady.ttf");
+			sf::Text Text,Name;
+			Text.setPosition(500 - 350, 400 - 150);
+			Text.setCharacterSize(30);
+			Text.setFont(font);
+			Text.setString("63010256 Thanapat Sittipornchaisakul");
+			Text.setFillColor(sf::Color::Color(255, 30, 30));
+
+			Name.setPosition(500 - 400, 400 - 300);
+			Name.setCharacterSize(60);
+			Name.setFont(font);
+			Name.setString("DarkCastle");
+			Name.setFillColor(sf::Color::Color(255,51,51));
+
 			if (a != 0)
 			{
 				selectSound.play();
@@ -91,6 +106,8 @@ int main()
 				window.clear();
 				window.draw(Mbackground);
 				menu.draw(window);
+				window.draw(Text);
+				window.draw(Name);
 				window.display();
 			}
 		}
@@ -1184,7 +1201,7 @@ int main()
 					}
 				}
 
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 				{
 					section_number = 0;
 					window.close();
@@ -1418,7 +1435,8 @@ int main()
 			winBuff.loadFromFile("resource/wining.wav");
 			sf::Sound winSound;
 			winSound.setBuffer(winBuff);
-			//winSound.play();
+			winSound.setVolume(20);
+			winSound.play();
 			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
 			winMenu winmenu(window.getSize().x, window.getSize().y);
 			sf::Texture Rtexture;

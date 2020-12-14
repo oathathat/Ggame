@@ -1,5 +1,5 @@
 hard 67
+test2 30
 g 6
 d 4
 c 3
-b 2
