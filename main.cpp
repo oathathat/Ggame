@@ -172,14 +172,16 @@ int main()
 			keyTexture.loadFromFile("resource/key.png");
 
 			//TEXT
-			sf::Font lifeFont;
+			sf::Font lifeFont,font;
 			lifeFont.loadFromFile("resource/Ancient.ttf");
+			font.loadFromFile("resource/lady.ttf");
+
 			sf::Text lifeText;
 			lifeText.setCharacterSize(50);
 			lifeText.setPosition({ 140 ,240 });
 			lifeText.setFont(lifeFont);
 			lifeText.setString("LIFE");
-			lifeText.setFillColor(sf::Color::Color(255, 127, 80));
+			lifeText.setFillColor(sf::Color::Red);
 
 			sf::Clock Timer;
 			int timeCount = 0;
@@ -195,21 +197,30 @@ int main()
 			lifeNum.setPosition({ 140 ,240 });
 			lifeNum.setFont(lifeFont);
 			lifeNum.setString(std::to_string(player->getLife()));
-			lifeNum.setFillColor(sf::Color::Color(255, 127, 80));
+			lifeNum.setFillColor(sf::Color::Red);
 
 			sf::Text scorenum;
 			scorenum.setCharacterSize(40);
 			scorenum.setPosition({ 140 ,240 });
 			scorenum.setFont(lifeFont);
 			scorenum.setString(std::to_string(score));
-			scorenum.setFillColor(sf::Color::Color(255, 160, 122));
+			scorenum.setFillColor(sf::Color::Red);
 
 			sf::Text scoretext;
 			scoretext.setCharacterSize(40);
 			scoretext.setPosition({ 140 ,240 });
 			scoretext.setFont(lifeFont);
 			scoretext.setString("Score");
-			scoretext.setFillColor(sf::Color::Color(255, 160, 122));
+			scoretext.setFillColor(sf::Color::Red);
+
+			sf::Text playerText;			
+			playerText.setCharacterSize(25);
+			playerText.setFont(font);
+			playerText.setString(Input);
+			playerText.setFillColor(sf::Color::Red);
+
+
+
 
 			//sound
 			sf::SoundBuffer shotBuff;
@@ -867,6 +878,7 @@ int main()
 							gameTime.setPosition(player->GetPosition().x, player->GetPosition().y - 300);
 							scoretext.setPosition(player->GetPosition().x - 395, player->GetPosition().y - 240);
 							scorenum.setPosition(player->GetPosition().x - 250, player->GetPosition().y - 240);
+							playerText.setPosition(player->GetPosition().x + 150, player->GetPosition().y - 265);
 						}
 						else
 						{
@@ -877,6 +889,7 @@ int main()
 							gameTime.setPosition(player->GetPosition().x, 84 * 4 - 300);
 							scoretext.setPosition(player->GetPosition().x - 395, 84 * 4 - 240);
 							scorenum.setPosition(player->GetPosition().x - 250, 84 * 4 - 240);
+							playerText.setPosition(player->GetPosition().x + 150, 84*4 - 265);
 						}
 					}
 					else if (player->GetPosition().y >= 125 * 4) {
@@ -887,6 +900,7 @@ int main()
 						gameTime.setPosition(player->GetPosition().x, 125 * 4 - 300);
 						scoretext.setPosition(player->GetPosition().x - 395, 125 * 4 - 240);
 						scorenum.setPosition(player->GetPosition().x - 250, 125 * 4 - 240);
+						playerText.setPosition(player->GetPosition().x + 150, 125 * 4 - 265);
 
 					}
 				}
@@ -901,6 +915,7 @@ int main()
 							gameTime.setPosition(499, player->GetPosition().y - 300);
 							scoretext.setPosition(499 - 395, player->GetPosition().y - 240);
 							scorenum.setPosition(499 - 250, player->GetPosition().y - 240);
+							playerText.setPosition(499 + 150,player->GetPosition().y - 265);
 						}
 						else
 						{
@@ -911,6 +926,7 @@ int main()
 							gameTime.setPosition(499, 84 * 4 - 300);
 							scoretext.setPosition(499 - 395, 84 * 4 - 240);
 							scorenum.setPosition(499 - 250, 84 * 4 - 240);
+							playerText.setPosition(499 + 150, 84*4 - 265);
 						}
 					}
 					else if (player->GetPosition().y >= 125 * 4) {
@@ -921,6 +937,7 @@ int main()
 						gameTime.setPosition(499, 125 * 4 - 300);
 						scoretext.setPosition(499 - 395, 125 * 4 - 240);
 						scorenum.setPosition(499 - 250, 125 * 4 - 240);
+						playerText.setPosition(499 + 150, 125*4 - 265);
 
 					}
 				}
@@ -954,6 +971,7 @@ int main()
 				window.draw(HPbar);
 				window.draw(scorenum);
 				window.draw(scoretext);
+				window.draw(playerText);
 
 
 				//for (Platform& platform : platforms)
@@ -1052,7 +1070,7 @@ int main()
 
 			std::string Name[6],Name2[6],Name3[6];
 			sf::Text Text,Easy,Normal,Hard;			
-			Easy.setFillColor(sf::Color::Color(255, 160, 122));
+			
 			sf::Text PlayerName[6],PlayerName2[6],PlayerName3[6];
 			sf::Text PlayerScoreE[6], PlayerScoreN[6], PlayerScoreH[6];
 			FILE* fp;
@@ -1136,21 +1154,26 @@ int main()
 			Text.setCharacterSize(30);
 			Text.setFont(font);
 			Text.setString("LeaderBoard");
+			Text.setFillColor(sf::Color::Red);
 			
 			Easy.setCharacterSize(25);
 			Easy.setPosition( 150 ,window.getSize().y / 2 - 150 );
 			Easy.setFont(font);
 			Easy.setString("Easy");
+			Easy.setFillColor(sf::Color::Red);
+			
 
 			Normal.setCharacterSize(25);
 			Normal.setPosition( 440 ,window.getSize().y / 2 - 150 );
 			Normal.setFont(font);
 			Normal.setString("Normal");
+			Normal.setFillColor(sf::Color::Red);
 
 			Hard.setCharacterSize(25);
 			Hard.setPosition( 750 ,window.getSize().y / 2 - 150 );
 			Hard.setFont(font);
 			Hard.setString("Hard");
+			Hard.setFillColor(sf::Color::Red);
 
 			while (window.isOpen())
 			{
@@ -1337,10 +1360,17 @@ int main()
 
 			sf::Font font;
 			font.loadFromFile("resource/lady.ttf");
-			sf::Text Entertext;			
+			sf::Text Entertext, Text;
 			Entertext.setPosition(window.getSize().x / 2 - 50, window.getSize().y / 2);
 			Entertext.setCharacterSize(25);
 			Entertext.setFont(font);
+						
+			Text.setPosition(window.getSize().x / 2 - 150, window.getSize().y / 2-150);
+			Text.setCharacterSize(30);
+			Text.setFont(font);
+			Text.setString("Enter Your Name");
+			Text.setFillColor(sf::Color::White);
+
 			while (window.isOpen())
 			{
 				sf::Event event;
@@ -1382,10 +1412,12 @@ int main()
 					Entertext.setString(Input);
 					window.draw(Mbackground);
 					window.draw(Entertext);
+					window.draw(Text);
 					window.display();
 				}
 		}
 	}
+		if(section_number == 6){}
 
 	}
 	return 0;
