@@ -432,8 +432,7 @@ int main()
 				}
 				else if (difficultz == 1)
 				{
-					i->setHP(200);
-					;
+					i->setHP(200);					
 				}
 				else if (difficultz == 2)
 				{
@@ -710,45 +709,98 @@ int main()
 				{
 					if (i->GetGlobalBounds().intersects(player->GetGlobalBounds()))
 					{
-						if (difficultz == 0)
-						{
-							totalscoreE = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
-							FILE* fp;
-							char temp[255];
-							int score[6];
-							std::string names[6];
-							std::vector <std::pair<int, std::string>> userScore;
-							fp = fopen("./Score.txt", "r");
-							for (int i = 0; i < 5; i++)
+						
+							if (difficultz == 0)
 							{
-								fscanf(fp, "%s", &temp);
-								names[i] = temp;
-								fscanf(fp, "%d", &score[i]);
-								userScore.push_back(std::make_pair(score[i], names[i]));
-							}
-							names[5] = Input;
-							score[5] = totalscoreE;
-							userScore.push_back(std::make_pair(score[5], names[5]));
-							sort(userScore.begin(), userScore.end());
+								totalscoreE = player->getLife() * 15 - (timeCount / 4) + score + ulti * 3;
+								FILE* fp;
+								char temp[255];
+								int score[6];
+								std::string names[6];
+								std::vector <std::pair<int, std::string>> userScore;
+								fp = fopen("./Score.txt", "r");
+								for (int i = 0; i < 5; i++)
+								{
+									fscanf(fp, "%s", &temp);
+									names[i] = temp;
+									fscanf(fp, "%d", &score[i]);
+									userScore.push_back(std::make_pair(score[i], names[i]));
+								}
+								names[5] = Input;
+								score[5] = totalscoreE;
+								userScore.push_back(std::make_pair(score[5], names[5]));
+								sort(userScore.begin(), userScore.end());
+								fclose(fp);
 
-							fclose(fp);
-							fopen("./Score.txt", "w");
-							for (int i = 5; i >= 1; i--)
-							{
-								strcpy(temp, userScore[i].second.c_str());
-								fprintf(fp, "%s %d\n", temp, userScore[i].first);
+								fopen("./Score.txt", "w");
+								for (int i = 5; i >= 1; i--)
+								{
+									strcpy(temp, userScore[i].second.c_str());
+									fprintf(fp, "%s %d\n", temp, userScore[i].first);
+								}
+								fclose(fp);
 							}
-							fclose(fp);
-							
-						}
-						if (difficultz == 1)
-						{
-							totalscoreN = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
-						}
-						if (difficultz == 2)
-						{
-							totalscoreH = player->getLife() * 15 - (timeCount / 5) + score + ulti * 3;
-						}
+							if (difficultz == 1)
+							{
+								totalscoreN = player->getLife() * 15 - (timeCount / 4) + score + ulti * 3;
+								FILE* fp;
+								char temp[255];
+								int score[6];
+								std::string names[6];
+								std::vector <std::pair<int, std::string>> userScore;
+								fp = fopen("./ScoreN.txt", "r");
+								for (int i = 0; i < 5; i++)
+								{
+									fscanf(fp, "%s", &temp);
+									names[i] = temp;
+									fscanf(fp, "%d", &score[i]);
+									userScore.push_back(std::make_pair(score[i], names[i]));
+								}
+								names[5] = Input;
+								score[5] = totalscoreN;
+								userScore.push_back(std::make_pair(score[5], names[5]));
+								sort(userScore.begin(), userScore.end());
+								fclose(fp);
+
+								fopen("./ScoreN.txt", "w");
+								for (int i = 5; i >= 1; i--)
+								{
+									strcpy(temp, userScore[i].second.c_str());
+									fprintf(fp, "%s %d\n", temp, userScore[i].first);
+								}
+								fclose(fp);
+							}
+							if (difficultz == 2)
+							{
+								totalscoreH = player->getLife() * 15 - (timeCount / 4) + score + ulti * 3;
+								FILE* fp;
+								char temp[255];
+								int score[6];
+								std::string names[6];
+								std::vector <std::pair<int, std::string>> userScore;
+								fp = fopen("./ScoreH.txt", "r");
+								for (int i = 0; i < 5; i++)
+								{
+									fscanf(fp, "%s", &temp);
+									names[i] = temp;
+									fscanf(fp, "%d", &score[i]);
+									userScore.push_back(std::make_pair(score[i], names[i]));
+								}
+								names[5] = Input;
+								score[5] = totalscoreH;
+								userScore.push_back(std::make_pair(score[5], names[5]));
+								sort(userScore.begin(), userScore.end());
+								fclose(fp);
+
+								fopen("./ScoreH.txt", "w");
+								for (int i = 5; i >= 1; i--)
+								{
+									strcpy(temp, userScore[i].second.c_str());
+									fprintf(fp, "%s %d\n", temp, userScore[i].first);
+								}
+								fclose(fp);
+							}					
+								
 
 						powerupSound.play();
 						delete key.at(counterG);
@@ -981,7 +1033,7 @@ int main()
 			}
 
 		}
-		if (section_number==2){
+		if (section_number == 2) {
 			sf::SoundBuffer  select;
 			sf::Sound  selectSound;
 			select.loadFromFile("resource/menuselect.wav");
@@ -994,17 +1046,17 @@ int main()
 			Mtexture.loadFromFile("resource/scoreboard.png");
 			sf::Sprite Mbackground;
 			Mbackground.setTexture(Mtexture);
-			Mbackground.setPosition(-460,0);
+			Mbackground.setPosition(-460, 0);
 
 			sf::Font font;
 			font.loadFromFile("resource/lady.ttf");
-			
-			std::string Name[6];
+
+			std::string Name[6],Name2[6],Name3[6];
 			sf::Text Text;
-			sf::Text PlayerName[6];
+			sf::Text PlayerName[6],PlayerName2[6],PlayerName3[6];
 			sf::Text PlayerScoreE[6], PlayerScoreN[6], PlayerScoreH[6];
 			FILE* fp;
-			char temp[255];
+			char temp[255],temp2[255],temp3[255];
 			int scoreE[6],scoreN[6],scoreH[6];
 
 			std::vector <std::pair<int, std::string>> userScoreE, userScoreN, userScoreH;
@@ -1024,19 +1076,65 @@ int main()
 				PlayerName[i].setFont(font);
 				PlayerName[i].setCharacterSize(20);
 				PlayerName[i].setFillColor(sf::Color::White);
-				PlayerName[i].setPosition(window.getSize().x / 2 - 150, window.getSize().y / 2 - 50 + (80 * i));
+				PlayerName[i].setPosition(window.getSize().x / 3 - 200, window.getSize().y / 2 - 50 + (80 * i));
 				PlayerScoreE[i].setFont(font);
 				PlayerScoreE[i].setCharacterSize(20);
 				PlayerScoreE[i].setFillColor(sf::Color::White);
-				PlayerScoreE[i].setPosition(window.getSize().x / 2 + 100, window.getSize().y / 2 - 50 + (80 * i));
+				PlayerScoreE[i].setPosition(window.getSize().x /3 - 100, window.getSize().y / 2 - 50 + (80 * i));
 			}
+			fclose(fp);
+
+			fp = fopen("./ScoreN.txt", "r");
+			for (int i = 0; i < 5; i++)
+			{
+				fscanf(fp, "%s", &temp2);
+				Name2[i] = temp2;
+				PlayerName2[i].setString(Name2[i]);
+				fscanf(fp, "%d", &scoreN[i]);
+				PlayerScoreN[i].setString(std::to_string(scoreN[i]));
+				userScoreN.push_back(std::make_pair(scoreN[i], Name2[i]));
+			}
+			for (int i = 0; i < 5; i++)
+			{
+				PlayerName2[i].setFont(font);
+				PlayerName2[i].setCharacterSize(20);
+				PlayerName2[i].setFillColor(sf::Color::White);
+				PlayerName2[i].setPosition(window.getSize().x / 3 +100, window.getSize().y / 2 - 50 + (80 * i));
+				PlayerScoreN[i].setFont(font);
+				PlayerScoreN[i].setCharacterSize(20);
+				PlayerScoreN[i].setFillColor(sf::Color::White);
+				PlayerScoreN[i].setPosition(window.getSize().x / 3 +200, window.getSize().y / 2 - 50 + (80 * i));
+			}
+			fclose(fp);
+
+			fp = fopen("./ScoreH.txt", "r");
+			for (int i = 0; i < 5; i++)
+			{
+				fscanf(fp, "%s", &temp3);
+				Name3[i] = temp3;
+				PlayerName3[i].setString(Name3[i]);
+				fscanf(fp, "%d", &scoreH[i]);
+				PlayerScoreH[i].setString(std::to_string(scoreH[i]));
+				userScoreH.push_back(std::make_pair(scoreH[i], Name3[i]));
+			}
+			for (int i = 0; i < 5; i++)
+			{
+				PlayerName3[i].setFont(font);
+				PlayerName3[i].setCharacterSize(20);
+				PlayerName3[i].setFillColor(sf::Color::White);
+				PlayerName3[i].setPosition(window.getSize().x / 3+400 , window.getSize().y / 2 - 50 + (80 * i));
+				PlayerScoreH[i].setFont(font);
+				PlayerScoreH[i].setCharacterSize(20);
+				PlayerScoreH[i].setFillColor(sf::Color::White);
+				PlayerScoreH[i].setPosition(window.getSize().x / 3 + 500, window.getSize().y / 2 - 50 + (80 * i));
+			}
+			fclose(fp);
 
 			//if (!texture.loadFromFile("Player/ScoreBoard.jpg"));
 				
 			Text.setPosition(window.getSize().x / 2 - 50, window.getSize().y / 2);
 			Text.setCharacterSize(25);
 			Text.setFont(font);
-
 			while (window.isOpen())
 			{
 
@@ -1057,12 +1155,15 @@ int main()
 					break;
 				}
 				window.clear();
-
 				window.draw(Mbackground);
 				for (int i = 0; i < 5; i++)
 				{
 					window.draw(PlayerName[i]);
 					window.draw(PlayerScoreE[i]);
+					window.draw(PlayerName2[i]);
+					window.draw(PlayerScoreN[i]);
+					window.draw(PlayerName3[i]);
+					window.draw(PlayerScoreH[i]);
 				}
 				window.display();
 			}
