@@ -1051,7 +1051,8 @@ int main()
 			font.loadFromFile("resource/lady.ttf");
 
 			std::string Name[6],Name2[6],Name3[6];
-			sf::Text Text;
+			sf::Text Text,Easy,Normal,Hard;			
+			Easy.setFillColor(sf::Color::Color(255, 160, 122));
 			sf::Text PlayerName[6],PlayerName2[6],PlayerName3[6];
 			sf::Text PlayerScoreE[6], PlayerScoreN[6], PlayerScoreH[6];
 			FILE* fp;
@@ -1075,11 +1076,11 @@ int main()
 				PlayerName[i].setFont(font);
 				PlayerName[i].setCharacterSize(20);
 				PlayerName[i].setFillColor(sf::Color::White);
-				PlayerName[i].setPosition(window.getSize().x / 3 - 200, window.getSize().y / 2 - 50 + (80 * i));
+				PlayerName[i].setPosition(window.getSize().x / 3 - 200, window.getSize().y / 2 -80 + (80 * i));
 				PlayerScoreE[i].setFont(font);
 				PlayerScoreE[i].setCharacterSize(20);
 				PlayerScoreE[i].setFillColor(sf::Color::White);
-				PlayerScoreE[i].setPosition(window.getSize().x /3 - 100, window.getSize().y / 2 - 50 + (80 * i));
+				PlayerScoreE[i].setPosition(window.getSize().x /3 - 100, window.getSize().y / 2 -80 + (80 * i));
 			}
 			fclose(fp);
 
@@ -1098,11 +1099,11 @@ int main()
 				PlayerName2[i].setFont(font);
 				PlayerName2[i].setCharacterSize(20);
 				PlayerName2[i].setFillColor(sf::Color::White);
-				PlayerName2[i].setPosition(window.getSize().x / 3 +100, window.getSize().y / 2 - 50 + (80 * i));
+				PlayerName2[i].setPosition(window.getSize().x / 3 +100, window.getSize().y / 2 -80 + (80 * i));
 				PlayerScoreN[i].setFont(font);
 				PlayerScoreN[i].setCharacterSize(20);
 				PlayerScoreN[i].setFillColor(sf::Color::White);
-				PlayerScoreN[i].setPosition(window.getSize().x / 3 +200, window.getSize().y / 2 - 50 + (80 * i));
+				PlayerScoreN[i].setPosition(window.getSize().x / 3 +200, window.getSize().y / 2-80 + (80 * i));
 			}
 			fclose(fp);
 
@@ -1121,19 +1122,36 @@ int main()
 				PlayerName3[i].setFont(font);
 				PlayerName3[i].setCharacterSize(20);
 				PlayerName3[i].setFillColor(sf::Color::White);
-				PlayerName3[i].setPosition(window.getSize().x / 3+400 , window.getSize().y / 2 - 50 + (80 * i));
+				PlayerName3[i].setPosition(window.getSize().x / 3+400 , window.getSize().y / 2 -80 + (80 * i));
 				PlayerScoreH[i].setFont(font);
 				PlayerScoreH[i].setCharacterSize(20);
 				PlayerScoreH[i].setFillColor(sf::Color::White);
-				PlayerScoreH[i].setPosition(window.getSize().x / 3 + 500, window.getSize().y / 2 - 50 + (80 * i));
+				PlayerScoreH[i].setPosition(window.getSize().x / 3 + 500, window.getSize().y / 2 -80+ (80 * i));
 			}
 			fclose(fp);
 
 			//if (!texture.loadFromFile("Player/ScoreBoard.jpg"));
 				
-			Text.setPosition(window.getSize().x / 2 - 50, window.getSize().y / 2);
-			Text.setCharacterSize(25);
+			Text.setPosition(window.getSize().x / 2 - 120, window.getSize().y / 2-250);
+			Text.setCharacterSize(30);
 			Text.setFont(font);
+			Text.setString("LeaderBoard");
+			
+			Easy.setCharacterSize(25);
+			Easy.setPosition( 150 ,window.getSize().y / 2 - 150 );
+			Easy.setFont(font);
+			Easy.setString("Easy");
+
+			Normal.setCharacterSize(25);
+			Normal.setPosition( 440 ,window.getSize().y / 2 - 150 );
+			Normal.setFont(font);
+			Normal.setString("Normal");
+
+			Hard.setCharacterSize(25);
+			Hard.setPosition( 750 ,window.getSize().y / 2 - 150 );
+			Hard.setFont(font);
+			Hard.setString("Hard");
+
 			while (window.isOpen())
 			{
 
@@ -1164,6 +1182,10 @@ int main()
 					window.draw(PlayerName3[i]);
 					window.draw(PlayerScoreH[i]);
 				}
+				window.draw(Text);
+				window.draw(Easy);
+				window.draw(Normal);
+				window.draw(Hard);
 				window.display();
 			}
 		}
