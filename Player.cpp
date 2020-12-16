@@ -33,34 +33,34 @@ void Player::Update(float deltaTime, int hit)
     velocity.x *= 0.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        velocity.x -= speed;
+        velocity.x -= speed *deltaTime*120.0f;
 
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        velocity.x += speed;
+        velocity.x += speed * deltaTime*120.0f;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && speedUp || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && speedUp)
     {
-        speed = speed + 200;
-        jumpHeight = jumpHeight + 50;
+        speed = speed + 110;
+        jumpHeight = jumpHeight + 90;
         speedUp = false;
     }
     else if (!speedUp)
     {
-        speed = speed - 200;
-        jumpHeight = jumpHeight - 50;
+        speed = speed - 110;
+        jumpHeight = jumpHeight - 90;
         speedUp = true;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && canJump && velocity.y <= 0)
     {
         jumpSound.play();
         canJump = false;
-        velocity.y = -sqrt(2.0f * 981.0f * jumpHeight);
+        velocity.y = -sqrt(2.0f * 981.0f * jumpHeight*1.2)-100;
     }
 
 
-    velocity.y += 981.0f * deltaTime;
+    velocity.y += 981.0f * deltaTime*1.2;
 
     if (velocity.x == 0.0f)
     {
@@ -83,12 +83,12 @@ void Player::Update(float deltaTime, int hit)
     {
         if (faceRight)
         {
-            velocity.x -= speed * 10;
+            velocity.x -= speed * deltaTime * 180.0f+200;
             row = 3;
         }
         else
         {
-            velocity.x += speed * 10;
+            velocity.x += speed * deltaTime * 180.0f+200;
             row = 3;
         }
     }

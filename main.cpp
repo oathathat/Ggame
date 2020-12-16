@@ -53,7 +53,7 @@ int main()
 				selectSound.play();
 			}
 			a = 1;
-			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
 			Menu menu(window.getSize().x, window.getSize().y);
 			sf::Texture Mtexture;
 			Mtexture.loadFromFile("resource/menuBG.jpg");
@@ -1074,7 +1074,7 @@ int main()
 			selectSound.setVolume(40.0);
 			selectSound.play();
 
-			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
 			sf::Texture Mtexture;
 			Mtexture.loadFromFile("resource/scoreboard.png");
 			sf::Sprite Mbackground;
@@ -1232,7 +1232,7 @@ int main()
 			sf::Sound gameoverSound;
 			gameoverSound.setBuffer(gameoverBuff);
 			gameoverSound.play();
-			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
 			retryMenu retrymenu(window.getSize().x, window.getSize().y);
 			sf::Texture Rtexture;
 			Rtexture.loadFromFile("resource/retryBG.jpg");
@@ -1295,7 +1295,7 @@ int main()
 			selectSound.play();
 			
 
-			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
 			difficult menu(window.getSize().x, window.getSize().y);
 			sf::Texture Mtexture;
 			Mtexture.loadFromFile("resource/menuBG.jpg");
@@ -1364,7 +1364,7 @@ int main()
 			selectSound.setBuffer(select);
 			selectSound.setVolume(40.0);
 			selectSound.play();
-			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
 			sf::Texture Mtexture;
 			Mtexture.loadFromFile("resource/menuBG.jpg");
 			sf::Sprite Mbackground;
@@ -1437,7 +1437,7 @@ int main()
 			winSound.setBuffer(winBuff);
 			winSound.setVolume(20);
 			winSound.play();
-			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame");
+			sf::RenderWindow window(sf::VideoMode(1000, 800), "Ggame", sf::Style::Close);
 			winMenu winmenu(window.getSize().x, window.getSize().y);
 			sf::Texture Rtexture;
 			Rtexture.loadFromFile("resource/winBG.jpg");
